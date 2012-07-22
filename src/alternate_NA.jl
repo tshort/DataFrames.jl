@@ -7,10 +7,10 @@ promote_rule{T <: Float}(::Type{T}, ::Type{NAtype} ) = T
 isna{T <: Float}(x::T) = isnan(x)
 isna{T <: Float}(x::AbstractVector{T}) = x .!= x
 nafilter{T <: Float}(v::AbstractVector{T}) = v[!isna(v)]
-nareplace{T <: Float}(v::AbstractVector{T}, r::T) = [isna(v)[i] ? r : v[i] for i = 1:length(v)]
+nareplace{T <: Float}(v::AbstractVector{T}, r::T) = [isna(v[i]) ? r : v[i] for i = 1:length(v)]
 
 type NAFilter{T}
-    x::AbstractVector{T}
+    x::T
 end
 function start(v::NAFilter)
     for k in 1:length(v.x)
@@ -32,7 +32,7 @@ function next(v::NAFilter, i)
     return nxt, newi
 end
 done(v::NAFilter, i) = i > length(v.x)
-naFilter{T <: Float}(v::AbstractVector{T}) = NAFilter(v)
+naFilter{T}(v::T) = NAFilter{T}(v)
     
 type NAReplace{T}
     x::AbstractVector{T}
@@ -49,3 +49,42 @@ function next(v::NAReplace, i)
 end
 done(v::NAReplace, i) = i > length(v.x)
 naReplace{T <: Float}(v::AbstractVector{T}, val::T) = NAReplace(v, val)
+
+## function sum{T<:Float}(A::NAFilter{T})
+##     println("here")
+##     A = A.x::Vector{Float64}
+##     n = length(A)
+##     if (n == 0)
+##         return zero(T)
+##     end
+##     s = 0.0
+##     c = zero(T)
+##     for i in 1:n
+##         if isna(A[i])
+##             continue
+##         end
+##         Ai = A[i]
+##         t = s + Ai
+##         if abs(s) >= abs(Ai)
+##             c += ((s-t) + Ai)
+##         else
+##             c += ((Ai-t) + s)
+##         end
+##         s = t
+##     end
+##     s + c
+## end
+
+function sum(A::NAFilter)
+    A = A.x
+    if isempty(A)
+        return zero(T)
+    end
+    v = 0.0
+    for x in A
+        if !isna(x)
+            v += x
+        end
+    end
+    v
+end

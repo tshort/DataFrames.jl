@@ -12,26 +12,28 @@ nareplace{T <: Float}(v::AbstractVector{T}, r::T) = [isna(v[i]) ? r : v[i] for i
 type NAFilter{T}
     x::T
 end
-function start(v::NAFilter)
-    for k in 1:length(v.x)
+function start{T}(v::NAFilter{T})
+    x = v.x::T
+    for k in 1:length(x)
         if !isna(v.x[k])
             return k
         end
     end
-    return length(v.x) + 1
+    return length(x) + 1
 end
-function next(v::NAFilter, i)
-    nxt = v.x[i]
-    newi = length(v.x) + 1
-    for k in i + 1 : length(v.x)
-        if !isna(v.x[k])
+function next{T}(v::NAFilter{T}, i)
+    x = v.x::T
+    nxt = x[i]
+    newi = length(x) + 1
+    for k in i + 1 : length(x)
+        if !isna(x[k])
             newi = k
             break
         end
     end
     return nxt, newi
 end
-done(v::NAFilter, i) = i > length(v.x)
+done{T}(v::NAFilter{T}, i) = i > length(v.x::T)
 naFilter{T}(v::T) = NAFilter{T}(v)
     
 type NAReplace{T}
@@ -75,16 +77,13 @@ naReplace{T <: Float}(v::AbstractVector{T}, val::T) = NAReplace(v, val)
 ##     s + c
 ## end
 
-function sum(A::NAFilter)
-    A = A.x
-    if isempty(A)
-        return zero(T)
-    end
-    v = 0.0
-    for x in A
-        if !isna(x)
-            v += x
-        end
-    end
-    v
-end
+## function sum(A::NAFilter)
+##     A = A.x
+##     v = 0.0
+##     for x in A
+##         if !isna(x)
+##             v += x
+##         end
+##     end
+##     v
+## end

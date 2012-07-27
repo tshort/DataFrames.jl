@@ -154,20 +154,6 @@ function interaction_design_matrix(a::DataFrame, b::DataFrame)
 end
 
 
-# Take an Expr/Symbol
-function expand_helper(ex::Symbol, df::DataFrame)
-    a = with(df, ex)
-    if isa(a, PooledDataVec)
-      r = expand(a, string(ex))
-    elseif isa(a, DataVec)
-      r = DataFrame()
-      r[string(ex)] = a
-    else
-      error("could not expand symbol to a DataFrame")
-    end
-    return r
-end
-
 #
 # The main expression to DataFrame expansion function.
 # Returns a DataFrame.
@@ -179,7 +165,6 @@ function expand(ex::Expr, df::DataFrame)
         f(FormulaExpander(), ex.args[2:end], df)
     else
         # Everything else is called recursively:
-    println("B", ex, )
         expand(with(df, ex), string(ex), df)
     end
 end

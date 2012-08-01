@@ -1,3 +1,23 @@
+# put here temporarily
+
+type NAtype <: Number; end
+const NA = NAtype()
+show(io, x::NAtype) = print(io, "NA")
+
+type NAException <: Exception
+    msg::String
+end
+
+length(x::NAtype) = 1
+size(x::NAtype) = ()
+isna(x::NAtype) = true
+isna(x) = false
+
+==(na::NAtype, na2::NAtype) = NA
+==(na::NAtype, b) = NA
+==(a, na::NAtype) = NA
+
+
 
 abstract SignedNA <: Signed
 
@@ -272,6 +292,16 @@ promote_rule(::Type{IntNA128}, ::Type{IntNA16} ) = IntNA128
 promote_rule(::Type{IntNA128}, ::Type{IntNA32} ) = IntNA128
 promote_rule(::Type{IntNA128}, ::Type{IntNA64} ) = IntNA128
 promote_rule(::Type{IntNA128}, ::Type{IntNA128}) = IntNA128
+
+promote_rule(::Type{Float32}, ::Type{IntNA8} ) = Float32
+promote_rule(::Type{Float32}, ::Type{IntNA16}) = Float32
+promote_rule(::Type{Float32}, ::Type{IntNA32}) = Float64
+promote_rule(::Type{Float32}, ::Type{IntNA64}) = Float64 # TODO: should be Float80
+
+promote_rule(::Type{Float64}, ::Type{IntNA8} ) = Float64
+promote_rule(::Type{Float64}, ::Type{IntNA16}) = Float64
+promote_rule(::Type{Float64}, ::Type{IntNA32}) = Float64
+promote_rule(::Type{Float64}, ::Type{IntNA64}) = Float64 # TODO: should be Float80
 
 ## traits ##
 

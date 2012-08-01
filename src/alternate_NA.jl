@@ -87,3 +87,6 @@ naReplace{T <: Float}(v::AbstractVector{T}, val::T) = NAReplace(v, val)
 ##     end
 ##     v
 ## end
+
+show(io, n::Float64) = print(io, isna(n) ? "NA" : string(n))
+print(io, n::Float64) = print(io, isna(n) ? "NA" : string(n))

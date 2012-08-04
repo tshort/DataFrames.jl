@@ -137,6 +137,13 @@ convert(::Type{Int32},  x::IntNA32 ) = box(Int32, (unbox(IntNA32,  x)))
 convert(::Type{Int64},  x::IntNA64 ) = box(Int64, (unbox(IntNA64,  x)))
 convert(::Type{Int128}, x::IntNA128) = box(Int128,(unbox(IntNA128, x)))
 
+convert(::Type{Uint8},   x::IntNA8  ) = box(Uint8,  (unbox(IntNA8,   x)))
+convert(::Type{Uint16},  x::IntNA16 ) = box(Uint16, (unbox(IntNA16,  x)))
+convert(::Type{Uint32},  x::IntNA32 ) = box(Uint32, (unbox(IntNA32,  x)))
+convert(::Type{Uint64},  x::IntNA64 ) = box(Uint64, (unbox(IntNA64,  x)))
+convert(::Type{Uint128}, x::IntNA128) = box(Uint128,(unbox(IntNA128, x)))
+convert{T<:Unsigned}(::Type{T}, x::SignedNA) = convert(T, convert(typeof(basetype(x)), x))
+
 convert(::Type{SignedNA}, x::Int8  ) = convert(IntNA,x)
 convert(::Type{SignedNA}, x::Int16 ) = convert(IntNA,x)
 convert(::Type{SignedNA}, x::Int32 ) = convert(IntNA,x)

@@ -86,3 +86,7 @@ function next(v::NAReplace, i)
 end
 done(v::NAReplace, i) = i > length(v.x)
 naReplace{T <: Float}(v::AbstractVector{T}, val::T) = NAReplace(v, val)
+
+
+DataVec(x::Vector) = DataVec(x, isna(x))
+PooledDataVec(x::Vector) = PooledDataVec(x, isna(x))

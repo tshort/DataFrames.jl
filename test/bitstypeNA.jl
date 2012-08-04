@@ -29,3 +29,15 @@ idx = boolNA(fill(true, size(x)))
 idx[[1,end]] = NA
 @assert isna(x[idx][1])
 @assert isna(x[idx][2])
+
+
+x = [1:3, NA, 1:3, NA]
+d = DataFrame({x,1.0*x})
+d["x3"] = DataVec(d["x1"])
+d["x4"] = PooledDataVec(d["x1"])
+@assert isna(d[4,1])
+@assert isna(d[4,2])
+@assert isna(d[4,3])
+@assert isna(d[4,4])
+
+res = by(d, "x4", :(x1_sum = sum(x1); x2_mean = mean(x2)))

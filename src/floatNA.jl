@@ -382,15 +382,15 @@ abs(x::FloatNA32) = box(FloatNA32,abs_float(unbox(FloatNA32,x)))
 ## functions from sort.jl
 ##
 
-_jl_fp_pos_lt(x::FloatNA32, y::FloatNA32) = slt_int(unbox(FloatNA32,x),unbox(FloatNA32,y))
-_jl_fp_pos_lt(x::FloatNA64, y::FloatNA64) = slt_int(unbox(FloatNA64,x),unbox(FloatNA64,y))
-_jl_fp_pos_le(x::FloatNA32, y::FloatNA32) = sle_int(unbox(FloatNA32,x),unbox(FloatNA32,y))
-_jl_fp_pos_le(x::FloatNA64, y::FloatNA64) = sle_int(unbox(FloatNA64,x),unbox(FloatNA64,y))
+_jl_fp_pos_lt(x::FloatNA32, y::FloatNA32) = isna(x) || isna(y) ? NA_Float32 : slt_int(unbox(FloatNA32,x),unbox(FloatNA32,y))
+_jl_fp_pos_lt(x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Float64 : slt_int(unbox(FloatNA64,x),unbox(FloatNA64,y))
+_jl_fp_pos_le(x::FloatNA32, y::FloatNA32) = isna(x) || isna(y) ? NA_Float32 : sle_int(unbox(FloatNA32,x),unbox(FloatNA32,y))
+_jl_fp_pos_le(x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Float64 : sle_int(unbox(FloatNA64,x),unbox(FloatNA64,y))
 
-_jl_fp_neg_lt(x::Float32, y::Float32) = slt_int(unbox(Float32,y),unbox(Float32,x))
-_jl_fp_neg_lt(x::Float64, y::Float64) = slt_int(unbox(Float64,y),unbox(Float64,x))
-_jl_fp_neg_le(x::Float32, y::Float32) = sle_int(unbox(Float32,y),unbox(Float32,x))
-_jl_fp_neg_le(x::Float64, y::Float64) = sle_int(unbox(Float64,y),unbox(Float64,x))
+_jl_fp_neg_lt(x::FloatNA32, y::FloatNA32) = isna(x) || isna(y) ? NA_Float32 : slt_int(unbox(Float32,y),unbox(Float32,x))
+_jl_fp_neg_lt(x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Float64 : slt_int(unbox(Float64,y),unbox(Float64,x))
+_jl_fp_neg_le(x::FloatNA32, y::FloatNA32) = isna(x) || isna(y) ? NA_Float32 : sle_int(unbox(Float32,y),unbox(Float32,x))
+_jl_fp_neg_le(x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Float64 : sle_int(unbox(Float64,y),unbox(Float64,x))
 
 ##
 ## printing

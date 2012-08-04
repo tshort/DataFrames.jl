@@ -10,7 +10,8 @@ x = [pi, NA, 1:5]     # Float64
 @assert isna(mean(a))
 @assert isna(mean(x))
 ## @assert isna(median(a))   # BROKEN because of sort and non-boolean used in boolean context
-## @assert isna(median(x))  # BROKEN endless loop? - probable bug in median with NaN's
+## @assert isna(median(x))   # BROKEN endless loop? - probable bug in median with NaN's
+## @assert isna(quantile(x),[.5])  # BROKEN gives the wrong answer - not NA - sort puts NA's at the end
 @assert sum(nafilter(a)) == 17
 @assert sum(nafilter(x)) == sum([pi,1:5])
 @assert sum(nareplace(a,0)) == 17

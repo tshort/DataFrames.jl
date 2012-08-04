@@ -269,8 +269,8 @@ isless (x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Bool : fpislt64(un
 
 isequal(a::Integer, b::FloatNA) = (a==b) & isequal(float(a),b)
 isequal(a::FloatNA, b::Integer) = isequal(b, a)
-isless (a::Integer, b::FloatNA) = (a<b) | isless(float(a),b)
-isless (a::FloatNA, b::Integer) = (a<b) | isless(a,float(b))
+isless (a::Integer, b::FloatNA) = isna(b) ? NA_Bool : (a<b) | isless(float(a),b)
+isless (a::FloatNA, b::Integer) = isna(a) ? NA_Bool : (a<b) | isless(a,float(b))
 
 ==(x::FloatNA64, y::IntNA64  ) = eqfsi64(unbox(FloatNA64,x),unbox(IntNA64,y))
 ==(x::IntNA64  , y::FloatNA64) = eqfsi64(unbox(FloatNA64,y),unbox(IntNA64,x))
@@ -300,25 +300,43 @@ isless (a::FloatNA, b::Integer) = (a<b) | isless(a,float(b))
 ==(x::Int64  , y::FloatNA32) = eqfsi64(unbox(FloatNA64,float64(y)),unbox(Int64,x))
 ==(x::Uint64 , y::FloatNA32) = eqfui64(unbox(FloatNA64,float64(y)),unbox(Uint64,x))
 
-< (x::FloatNA64, y::Int64  ) = ltfsi64(unbox(FloatNA64,x),unbox(Int64,y))
-< (x::FloatNA64, y::Uint64 ) = ltfui64(unbox(FloatNA64,x),unbox(Uint64,y))
-< (x::Int64  , y::FloatNA64) = ltsif64(unbox(Int64,x),unbox(FloatNA64,y))
-< (x::Uint64 , y::FloatNA64) = ltuif64(unbox(Uint64,x),unbox(FloatNA64,y))
+< (x::FloatNA64, y::Int64  ) = isna(x) ? NA_Bool : ltfsi64(unbox(FloatNA64,x),unbox(Int64,y))
+< (x::FloatNA64, y::Uint64 ) = isna(x) ? NA_Bool : ltfui64(unbox(FloatNA64,x),unbox(Uint64,y))
+< (x::Int64  , y::FloatNA64) = isna(y) ? NA_Bool : ltsif64(unbox(Int64,x),unbox(FloatNA64,y))
+< (x::Uint64 , y::FloatNA64) = isna(y) ? NA_Bool : ltuif64(unbox(Uint64,x),unbox(FloatNA64,y))
 
-< (x::FloatNA32, y::Int64  ) = ltfsi64(unbox(FloatNA64,floatNA64(x)),unbox(Int64,y))
-< (x::FloatNA32, y::Uint64 ) = ltfui64(unbox(FloatNA64,floatNA64(x)),unbox(Uint64,y))
-< (x::Int64  , y::FloatNA32) = ltsif64(unbox(Int64,x),unbox(FloatNA64,floatNA64(y)))
-< (x::Uint64 , y::FloatNA32) = ltuif64(unbox(Uint64,x),unbox(FloatNA64,floatNA64(y)))
+< (x::FloatNA32, y::Int64  ) = isna(x) ? NA_Bool : ltfsi64(unbox(FloatNA64,floatNA64(x)),unbox(Int64,y))
+< (x::FloatNA32, y::Uint64 ) = isna(x) ? NA_Bool : ltfui64(unbox(FloatNA64,floatNA64(x)),unbox(Uint64,y))
+< (x::Int64  , y::FloatNA32) = isna(y) ? NA_Bool : ltsif64(unbox(Int64,x),unbox(FloatNA64,floatNA64(y)))
+< (x::Uint64 , y::FloatNA32) = isna(y) ? NA_Bool : ltuif64(unbox(Uint64,x),unbox(FloatNA64,floatNA64(y)))
 
-<=(x::FloatNA64, y::Int64  ) = lefsi64(unbox(FloatNA64,x),unbox(Int64,y))
-<=(x::FloatNA64, y::Uint64 ) = lefui64(unbox(FloatNA64,x),unbox(Uint64,y))
-<=(x::Int64  , y::FloatNA64) = lesif64(unbox(Int64,x),unbox(FloatNA64,y))
-<=(x::Uint64 , y::FloatNA64) = leuif64(unbox(Uint64,x),unbox(FloatNA64,y))
+<=(x::FloatNA64, y::Int64  ) = isna(x) ? NA_Bool : lefsi64(unbox(FloatNA64,x),unbox(Int64,y))
+<=(x::FloatNA64, y::Uint64 ) = isna(x) ? NA_Bool : lefui64(unbox(FloatNA64,x),unbox(Uint64,y))
+<=(x::Int64  , y::FloatNA64) = isna(y) ? NA_Bool : lesif64(unbox(Int64,x),unbox(FloatNA64,y))
+<=(x::Uint64 , y::FloatNA64) = isna(y) ? NA_Bool : leuif64(unbox(Uint64,x),unbox(FloatNA64,y))
 
-<=(x::FloatNA32, y::Int64  ) = lefsi64(unbox(FloatNA64,floatNA64(x)),unbox(Int64,y))
-<=(x::FloatNA32, y::Uint64 ) = lefui64(unbox(FloatNA64,floatNA64(x)),unbox(Uint64,y))
-<=(x::Int64  , y::FloatNA32) = lesif64(unbox(Int64,x),unbox(FloatNA64,floatNA64(y)))
-<=(x::Uint64 , y::FloatNA32) = leuif64(unbox(Uint64,x),unbox(FloatNA64,floatNA64(y)))
+<=(x::FloatNA32, y::Int64  ) = isna(x) ? NA_Bool : lefsi64(unbox(FloatNA64,floatNA64(x)),unbox(Int64,y))
+<=(x::FloatNA32, y::Uint64 ) = isna(x) ? NA_Bool : lefui64(unbox(FloatNA64,floatNA64(x)),unbox(Uint64,y))
+<=(x::Int64  , y::FloatNA32) = isna(y) ? NA_Bool : lesif64(unbox(Int64,x),unbox(FloatNA64,floatNA64(y)))
+<=(x::Uint64 , y::FloatNA32) = isna(y) ? NA_Bool : leuif64(unbox(Uint64,x),unbox(FloatNA64,floatNA64(y)))
+
+## Binary comparison operators ##
+
+for (f,scalarf) in ((:(.==),:(==)), (:.<, :<), (:.!=,:!=), (:.<=,:<=))
+    @eval begin
+        function ($f){T<:FloatNA}(A::AbstractArray{T}, B::AbstractArray{T})
+            F = Array(BoolNA, promote_shape(size(A),size(B)))
+            for i = 1:numel(B)
+                F[i] = ($scalarf)(A[i], B[i])
+            end
+            return F
+        end
+        ($f){T<:FloatNA}(A::Number, B::AbstractArray{T}) =
+            boolNA(reshape([ ($scalarf)(A, B[i]) for i=1:length(B)], size(B)))
+        ($f){T<:FloatNA}(A::AbstractArray{T}, B::Number) =
+            boolNA(reshape([ ($scalarf)(A[i], B) for i=1:length(A)], size(A)))
+    end
+end
 
 ## floating point traits ##
 

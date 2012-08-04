@@ -1,21 +1,3 @@
-# put here temporarily
-
-type NAtype <: Number; end
-const NA = NAtype()
-show(io, x::NAtype) = print(io, "NA")
-
-type NAException <: Exception
-    msg::String
-end
-
-length(x::NAtype) = 1
-size(x::NAtype) = ()
-isna(x::NAtype) = true
-isna(x) = false
-
-==(na::NAtype, na2::NAtype) = NA
-==(na::NAtype, b) = NA
-==(a, na::NAtype) = NA
 
 
 
@@ -36,6 +18,8 @@ end
 intNA(x) = convert(IntNA, x)
 intNA(x::IntNA) = x
 
+intNA(x::AbstractArray) = copy_to(similar(x,IntNA), x)
+intNA(x::AbstractArray{Int}) = reinterpret(IntNA, x, size(x))
 
 ## integer conversions ##
 
@@ -78,8 +62,8 @@ convert(::Type{IntNA16}, x::Int64  ) = box(IntNA16,trunc16(unbox(Int64,x)))
 convert(::Type{IntNA16}, x::Uint64 ) = box(IntNA16,trunc16(unbox(Uint64,x)))
 convert(::Type{IntNA16}, x::Int128 ) = box(IntNA16,trunc16(unbox(Int128,x)))
 convert(::Type{IntNA16}, x::Uint128) = box(IntNA16,trunc16(unbox(Uint128,x)))
-convert(::Type{IntNA16}, x::Float32) = box(IntNA16,trunc16(checked_fptosi32(unbox(Float32,x))))
-convert(::Type{IntNA16}, x::Float64) = box(IntNA16,trunc16(checked_fptosi64(unbox(Float64,x))))
+convert(::Type{IntNA16}, x::Float32) = isna(x) ? NA_Int16 : box(IntNA16,trunc16(checked_fptosi32(unbox(Float32,x))))
+convert(::Type{IntNA16}, x::Float64) = isna(x) ? NA_Int16 : box(IntNA16,trunc16(checked_fptosi64(unbox(Float64,x))))
 
 convert(::Type{IntNA32}, x::IntNA8   ) = isna(x) ? NA_Int32 : box(IntNA32,sext32(unbox(Int8,x)))
 convert(::Type{IntNA32}, x::IntNA16  ) = isna(x) ? NA_Int32 : box(IntNA32,sext32(unbox(Int16,x)))
@@ -98,8 +82,8 @@ convert(::Type{IntNA32}, x::Int64  ) = box(IntNA32,trunc32(unbox(Int64,x)))
 convert(::Type{IntNA32}, x::Uint64 ) = box(IntNA32,trunc32(unbox(Uint64,x)))
 convert(::Type{IntNA32}, x::Int128 ) = box(IntNA32,trunc32(unbox(Int128,x)))
 convert(::Type{IntNA32}, x::Uint128) = box(IntNA32,trunc32(unbox(Uint128,x)))
-convert(::Type{IntNA32}, x::Float32) = box(IntNA32,checked_fptosi32(unbox(Float32,x)))
-convert(::Type{IntNA32}, x::Float64) = box(IntNA32,trunc32(checked_fptosi64(unbox(Float64,x))))
+convert(::Type{IntNA32}, x::Float32) = isna(x) ? NA_Int32 : box(IntNA32,checked_fptosi32(unbox(Float32,x)))
+convert(::Type{IntNA32}, x::Float64) = isna(x) ? NA_Int32 : box(IntNA32,trunc32(checked_fptosi64(unbox(Float64,x))))
 
 convert(::Type{IntNA64}, x::IntNA8   ) = isna(x) ? NA_Int64 : box(IntNA64,sext64(unbox(Int8,x)))
 convert(::Type{IntNA64}, x::IntNA16  ) = isna(x) ? NA_Int64 : box(IntNA64,sext64(unbox(Int16,x)))
@@ -118,8 +102,8 @@ convert(::Type{IntNA64}, x::Int64 )  = box(IntNA64,unbox(Int64,x))
 convert(::Type{IntNA64}, x::Uint64 ) = box(IntNA64,unbox(Uint64,x))
 convert(::Type{IntNA64}, x::Int128 ) = box(IntNA64,trunc64(unbox(Int128,x)))
 convert(::Type{IntNA64}, x::Uint128) = box(IntNA64,trunc64(unbox(Uint128,x)))
-convert(::Type{IntNA64}, x::Float32) = box(IntNA64,checked_fptosi64(fpext64(unbox(Float32,x))))
-convert(::Type{IntNA64}, x::Float64) = box(IntNA64,checked_fptosi64(unbox(Float64,x)))
+convert(::Type{IntNA64}, x::Float32) = isna(x) ? NA_Int64 : box(IntNA64,checked_fptosi64(fpext64(unbox(Float32,x))))
+convert(::Type{IntNA64}, x::Float64) = isna(x) ? NA_Int64 : box(IntNA64,checked_fptosi64(unbox(Float64,x)))
 
 convert(::Type{IntNA128}, x::IntNA8   ) = isna(x) ? NA_Int128 : box(IntNA128,sext_int(Int128,unbox(Int8,x)))
 convert(::Type{IntNA128}, x::IntNA16  ) = isna(x) ? NA_Int128 : box(IntNA128,sext_int(Int128,unbox(Int16,x)))
@@ -141,8 +125,17 @@ convert(::Type{IntNA128}, x::Uint128) = box(IntNA128,unbox(Uint128,x))
 # TODO: convert(::Type{IntNA128}, x::Float32)
 # TODO: convert(::Type{IntNA128}, x::Float64)
 
-convert(::Type{Int64}, x::IntNA64 ) = box(Int64,unbox(IntNA64,x))
+convert(::Type{Int64}, x::IntNA8   ) = box(Int64,sext64(unbox(IntNA8,x)))
+convert(::Type{Int64}, x::IntNA16  ) = box(Int64,sext64(unbox(IntNA16,x)))
+convert(::Type{Int64}, x::IntNA32  ) = box(Int64,sext64(unbox(IntNA32,x)))
+convert(::Type{Int64}, x::IntNA64 )  = box(Int64,unbox(IntNA64,x))
+convert(::Type{Int64}, x::IntNA128 ) = box(Int64,trunc64(unbox(IntNA128,x)))
 
+convert(::Type{Int8},   x::IntNA8  ) = box(Int8,  (unbox(IntNA8,   x)))
+convert(::Type{Int16},  x::IntNA16 ) = box(Int16, (unbox(IntNA16,  x)))
+convert(::Type{Int32},  x::IntNA32 ) = box(Int32, (unbox(IntNA32,  x)))
+convert(::Type{Int64},  x::IntNA64 ) = box(Int64, (unbox(IntNA64,  x)))
+convert(::Type{Int128}, x::IntNA128) = box(Int128,(unbox(IntNA128, x)))
 
 convert(::Type{SignedNA}, x::Int8  ) = convert(IntNA,x)
 convert(::Type{SignedNA}, x::Int16 ) = convert(IntNA,x)
@@ -150,11 +143,40 @@ convert(::Type{SignedNA}, x::Int32 ) = convert(IntNA,x)
 convert(::Type{SignedNA}, x::Int64 ) = convert(IntNA64,x)
 convert(::Type{SignedNA}, x::Int128) = convert(IntNA128,x)
 
+convert(::Type{Float32}, x::IntNA8)    = isna(x) ? NA_Float32 : box(Float32,sitofp32(unbox(IntNA8,x)))
+convert(::Type{Float32}, x::IntNA16)   = isna(x) ? NA_Float32 : box(Float32,sitofp32(unbox(IntNA16,x)))
+convert(::Type{Float32}, x::IntNA32)   = isna(x) ? NA_Float32 : box(Float32,sitofp32(unbox(IntNA32,x)))
+convert(::Type{Float32}, x::IntNA64)   = isna(x) ? NA_Float32 : box(Float32,sitofp32(unbox(IntNA64,x)))
+
+convert(::Type{Float64}, x::IntNA8)    = isna(x) ? NA_Float64 : box(Float64,sitofp64(unbox(IntNA8,x)))
+convert(::Type{Float64}, x::IntNA16)   = isna(x) ? NA_Float64 : box(Float64,sitofp64(unbox(IntNA16,x)))
+convert(::Type{Float64}, x::IntNA32)   = isna(x) ? NA_Float64 : box(Float64,sitofp64(unbox(IntNA32,x)))
+convert(::Type{Float64}, x::IntNA64)   = isna(x) ? NA_Float64 : box(Float64,sitofp64(unbox(IntNA64,x)))
+
+convert(::Type{Float}, x::IntNA8)   = isna(x) ? NA_Float64 : convert(Float32, x)
+convert(::Type{Float}, x::IntNA16)  = isna(x) ? NA_Float64 : convert(Float32, x)
+convert(::Type{Float}, x::IntNA32)  = isna(x) ? NA_Float64 : convert(Float64, x)
+convert(::Type{Float}, x::IntNA64)  = isna(x) ? NA_Float64 : convert(Float64, x) # LOSSY
+
+
+
 intNA8(x)   = convert(IntNA8,x)
 intNA16(x)  = convert(IntNA16,x)
 intNA32(x)  = convert(IntNA32,x)
 intNA64(x)  = convert(IntNA64,x)
 intNA128(x) = convert(IntNA128,x)
+
+intNA8  (x::AbstractArray) = copy_to(similar(x,IntNA8  ), x)
+intNA16 (x::AbstractArray) = copy_to(similar(x,IntNA16 ), x)
+intNA32 (x::AbstractArray) = copy_to(similar(x,IntNA32 ), x)
+intNA64 (x::AbstractArray) = copy_to(similar(x,IntNA64 ), x)
+intNA128(x::AbstractArray) = copy_to(similar(x,IntNA128), x)
+intNA8  {N}(x::AbstractArray{Int8  ,N}) = reinterpret(IntNA8  , x, size(x))
+intNA16 {N}(x::AbstractArray{Int16 ,N}) = reinterpret(IntNA16 , x, size(x))
+intNA32 {N}(x::AbstractArray{Int32 ,N}) = reinterpret(IntNA32 , x, size(x))
+intNA64 {N}(x::AbstractArray{Int64 ,N}) = reinterpret(IntNA64 , x, size(x))
+intNA128{N}(x::AbstractArray{Int128,N}) = reinterpret(IntNA128, x, size(x))
+
 
 
 morebits(::Type{IntNA8})  = IntNA16
@@ -239,59 +261,17 @@ mod(x::IntNA128, y::IntNA128) = isna(x) || isna(y) ? NA_Int128 : box(IntNA128,sm
 
 promote_rule{T <: SignedNA}(::Type{T}, ::Type{NAtype} ) = T
 
-promote_rule(::Type{Int8},   ::Type{NAtype} ) = IntNA8
-promote_rule(::Type{Int16},  ::Type{NAtype} ) = IntNA16
-promote_rule(::Type{Int32},  ::Type{NAtype} ) = IntNA32
-promote_rule(::Type{Int64},  ::Type{NAtype} ) = IntNA64
-promote_rule(::Type{Int128}, ::Type{NAtype} ) = IntNA128
+basetypes = [:Int8 :Int16 :Int32 :Int64 :Int128
+             :Uint8 :Uint16 :Uint32 :Uint64 :Uint128
+             :IntNA8 :IntNA16 :IntNA32 :IntNA64 :IntNA128]'
+natypes = [:IntNA8, :IntNA16, :IntNA32, :IntNA64, :IntNA128]
 
-promote_rule(::Type{IntNA8}, ::Type{Int8}  )   = IntNA8
-
-promote_rule(::Type{IntNA8}, ::Type{Int8}  )   = IntNA8
-promote_rule(::Type{IntNA8}, ::Type{Uint8}  )  = IntNA8
-
-promote_rule(::Type{IntNA16}, ::Type{Int8}  )   = IntNA16
-promote_rule(::Type{IntNA16}, ::Type{Int16} )   = IntNA16
-promote_rule(::Type{IntNA16}, ::Type{Uint8}  )  = IntNA16
-promote_rule(::Type{IntNA16}, ::Type{Uint16} )  = IntNA16
-promote_rule(::Type{IntNA16}, ::Type{IntNA8}  ) = IntNA16
-
-promote_rule(::Type{IntNA32}, ::Type{Int8}  )   = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{Int16} )   = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{Int32} )   = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{Uint8}  )  = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{Uint16} )  = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{Uint32} )  = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{IntNA8}  ) = IntNA32
-promote_rule(::Type{IntNA32}, ::Type{IntNA16} ) = IntNA32
-
-promote_rule(::Type{IntNA64}, ::Type{Int8}  )   = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Int16} )   = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Int32} )   = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Int64} )   = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Uint8}  )  = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Uint16} )  = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Uint32} )  = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{Uint64} )  = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{IntNA8}  ) = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{IntNA16} ) = IntNA64
-promote_rule(::Type{IntNA64}, ::Type{IntNA32} ) = IntNA64
-
-promote_rule(::Type{IntNA128}, ::Type{Int8}  )   = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Int16} )   = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Int32} )   = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Int64} )   = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Int128})   = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Uint8}  )  = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Uint16} )  = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Uint32} )  = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Uint64} )  = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{Uint128})  = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{IntNA8}  ) = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{IntNA16} ) = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{IntNA32} ) = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{IntNA64} ) = IntNA128
-promote_rule(::Type{IntNA128}, ::Type{IntNA128}) = IntNA128
+for i in 1:length(basetypes)
+    for j in 1:length(natypes)
+        k = rem(i,5) + (rem(i,5) == 0 ? 5 : 0) # row number of basetypes
+        @eval promote_rule(::Type{$(natypes[j])}, ::Type{$(basetypes[i])} ) = $(natypes[max(j,k)])
+    end
+end
 
 promote_rule(::Type{Float32}, ::Type{IntNA8} ) = Float32
 promote_rule(::Type{Float32}, ::Type{IntNA16}) = Float32
@@ -317,29 +297,37 @@ typemin(::Type{IntNA128}) = intNA128(typemin(Int128) + 1)
 typemax(::Type{IntNA128}) = intNA64(typemax(Int128))
 
 ## NA pattern ##
-NA_Int8  = intNA8(-128)
-NA_Int16 = intNA16(-32768)
-NA_Int32 = intNA32(-2147483648)
-NA_Int64 = intNA64(typemin(Int64))
-NA_Int128 = intNA128(typemin(Int128))
+const NA_Int8  = intNA8(-128)
+const NA_Int16 = intNA16(-32768)
+const NA_Int32 = intNA32(-2147483648)
+const NA_Int64 = intNA64(typemin(Int64))
+const NA_Int128 = intNA128(typemin(Int128))
 
-na(x::Type{IntNA8})   = NA_Int8
-na(x::Type{IntNA16})  = NA_Int16
-na(x::Type{IntNA32})  = NA_Int32
-na(x::Type{IntNA64})  = NA_Int64
-na(x::Type{IntNA128}) = NA_Int128
+na(::Type{Int8})   = NA_Int8
+na(::Type{Int16})  = NA_Int16
+na(::Type{Int32})  = NA_Int32
+na(::Type{Int64})  = NA_Int64
+na(::Type{Int128}) = NA_Int128
 
-na(x::Int8)   = NA_Int8
-na(x::Int16)  = NA_Int16
-na(x::Int32)  = NA_Int32
-na(x::Int64)  = NA_Int64
-na(x::Int128) = NA_Int128
+na(::Type{IntNA8})   = NA_Int8
+na(::Type{IntNA16})  = NA_Int16
+na(::Type{IntNA32})  = NA_Int32
+na(::Type{IntNA64})  = NA_Int64
+na(::Type{IntNA128}) = NA_Int128
 
-na(x::IntNA8)   = NA_Int8
-na(x::IntNA16)  = NA_Int16
-na(x::IntNA32)  = NA_Int32
-na(x::IntNA64)  = NA_Int64
-na(x::IntNA128) = NA_Int128
+na(::Int8)   = NA_Int8
+na(::Int16)  = NA_Int16
+na(::Int32)  = NA_Int32
+na(::Int64)  = NA_Int64
+na(::Int128) = NA_Int128
+
+na(::IntNA8)   = NA_Int8
+na(::IntNA16)  = NA_Int16
+na(::IntNA32)  = NA_Int32
+na(::IntNA64)  = NA_Int64
+na(::IntNA128) = NA_Int128
+
+const NA_Int  = na(1)
 
 isna(x::IntNA8)   = eq_int(unbox(IntNA8,  x), unbox(IntNA8,   NA_Int8))
 isna(x::IntNA16)  = eq_int(unbox(IntNA16, x), unbox(IntNA16,  NA_Int16))
@@ -365,8 +353,92 @@ for (f,t) in ((:intNA64,:IntNA64), (:intNA128,:IntNA128))
     @eval ($f)(x::Float) = iround($t,x)
 end
 
+## byte order swaps for arbitrary-endianness serialization/deserialization ##
+bswap(x::IntNA16)  = box(IntNA16, bswap_int(unbox(IntNA16, x)))
+bswap(x::IntNA32)  = box(IntNA32, bswap_int(unbox(IntNA32, x)))
+bswap(x::IntNA64)  = box(IntNA64, bswap_int(unbox(IntNA64, x)))
+bswap(x::IntNA128) = box(IntNA128,bswap_int(unbox(IntNA128,x)))
 
 show{T<:SignedNA}(io, n::T) = print(io, isna(n) ? "NA" : dec(n))
 
 show(io, n::SignedNA) = print(io, isna(n) ? "NA" : dec(n))
 print(io::IO, n::SignedNA) = print(io, isna(n) ? "NA" : dec(n))
+
+
+## Array referencing ##
+
+ref(a::Array, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
+ref{T}(a::Array{T,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
+ref(a::Array{Any,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
+
+function check_bounds(sz::Int, I::SignedNA)
+    if isna(I) return; end
+    if I < 1 || I > sz
+        throw(BoundsError())
+    end
+end
+
+function check_bounds{T <: SignedNA}(sz::Int, I::AbstractVector{T})
+    for i in I
+        check_bounds(sz, i)
+    end
+end
+
+nafilter{T <: SignedNA}(v::AbstractVector{T}) = basetype(v[!isna(v)])  # should these return a base vector? Probably
+nareplace{T <: SignedNA}(v::AbstractVector{T}, r) = [isna(v[i]) ? r : basetype(v[i]) for i = 1:length(v)]
+
+basetype(::Type{IntNA8})   = Int8
+basetype(::Type{IntNA16})  = Int16
+basetype(::Type{IntNA32})  = Int32
+basetype(::Type{IntNA64})  = Int64
+basetype(::Type{IntNA128}) = Int128
+
+basetype(x::IntNA8)   = convert(Int8, x)
+basetype(x::IntNA16)  = convert(Int16, x)
+basetype(x::IntNA32)  = convert(Int32, x)
+basetype(x::IntNA64)  = convert(Int64, x)
+basetype(x::IntNA128) = convert(Int128, x)
+
+basetype{T,N}(x::Array{T,N}) = x
+
+function basetype{T<:SignedNA,N}(x::Array{T,N})
+    res = Array(basetype(T), size(x))
+    for i in 1:length(x)
+        res[i] = basetype(x[i])
+    end
+    res
+end
+
+natype(::Type{Int8})   = IntNA8
+natype(::Type{Int16})  = IntNA16
+natype(::Type{Int32})  = IntNA32
+natype(::Type{Int64})  = IntNA64
+natype(::Type{Int128}) = IntNA128
+
+natype(x::Int8)   = convert(IntNA8, x)
+natype(x::Int16)  = convert(IntNA16, x)
+natype(x::Int32)  = convert(IntNA32, x)
+natype(x::Int64)  = convert(IntNA64, x)
+natype(x::Int128) = convert(IntNA128, x)
+
+natype(::Type{IntNA8})   = IntNA8
+natype(::Type{IntNA16})  = IntNA16
+natype(::Type{IntNA32})  = IntNA32
+natype(::Type{IntNA64})  = IntNA64
+natype(::Type{IntNA128}) = IntNA128
+
+natype(x::IntNA8)   = x
+natype(x::IntNA16)  = x
+natype(x::IntNA32)  = x
+natype(x::IntNA64)  = x
+natype(x::IntNA128) = x
+
+natype{T<:SignedNA,N}(x::Array{T,N}) = x
+
+function natype{T<:Number,N}(x::Array{T,N})
+    res = Array(natype(T), size(x))
+    for i in 1:length(x)
+        res[i] = natype(x[i])
+    end
+    res
+end

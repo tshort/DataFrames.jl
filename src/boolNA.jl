@@ -12,10 +12,11 @@ promote_rule(::Type{Bool}, ::Type{NAtype} ) = BoolNA
 convert(::Type{BoolNA}, x::NAtype) = NA_Bool
 convert(::Type{BoolNA}, x::BoolNA) = x
 
-convert(::Type{BoolNA}, x::Number) = (x!=0)
-
 convert(::Type{Bool}, x::BoolNA) = box(Bool,unbox(BoolNA,x))
 convert(::Type{BoolNA}, x::Bool) = box(BoolNA,unbox(Bool,x))
+
+convert(::Type{BoolNA}, x::Integer) = (x!=0)
+convert(::Type{BoolNA}, x::Float) = (x!=0)
 
 convert(::Type{IntNA8},   x::BoolNA) = box(IntNA8,unbox(BoolNA,x))
 convert(::Type{IntNA16},  x::BoolNA) = box(IntNA16,zext16(unbox(BoolNA,x)))
@@ -147,6 +148,8 @@ end
 
 ref(A::Array, I::AbstractVector{BoolNA}) = A[findNA(I)]
 ## TODO more combinations here
+ref(A::Matrix, I::AbstractVector{BoolNA}, J::AbstractVector{Bool}) = A[findNA(I),find(J)]
+ref(A::Matrix, I::AbstractVector{Bool}, J::AbstractVector{BoolNA}) = A[find(I),findNA(J)]
 ref(A::Matrix, I::Integer, J::AbstractVector{BoolNA}) = A[I,findNA(J)]
 ref(A::Matrix, I::AbstractVector{BoolNA}, J::Integer) = A[findNA(I),J]
 ref(A::Matrix, I::AbstractVector{BoolNA}, J::AbstractVector{BoolNA}) = A[findNA(I),findNA(J)]

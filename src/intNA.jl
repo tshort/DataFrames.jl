@@ -368,8 +368,9 @@ print(io::IO, n::SignedNA) = print(io, isna(n) ? "NA" : dec(n))
 
 ## Array referencing ##
 
+ref(a::Array{Any,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
+ref{T<:Any}(a::Array{T,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
 ref(a::Array, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
-ref{T}(a::Array{T,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
 ref(a::Array{Any,1}, i::SignedNA) = isna(i) ? na(eltype(a)) : arrayref(a,int(i))
 
 function check_bounds(sz::Int, I::SignedNA)
@@ -386,6 +387,7 @@ function check_bounds{T <: SignedNA}(sz::Int, I::AbstractVector{T})
 end
 
 nafilter{T <: SignedNA}(v::AbstractVector{T}) = basetype(v[!isna(v)])  # should these return a base vector? Probably
+nareplace{T <: SignedNA}(v::AbstractVector{T}, r::T) = [isna(v[i]) ? r : basetype(v[i]) for i = 1:length(v)]
 nareplace{T <: SignedNA}(v::AbstractVector{T}, r) = [isna(v[i]) ? r : basetype(v[i]) for i = 1:length(v)]
 
 basetype(::Type{IntNA8})   = Int8

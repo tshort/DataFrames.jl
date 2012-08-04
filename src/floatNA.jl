@@ -397,5 +397,3 @@ _jl_fp_neg_le(x::Float64, y::Float64) = sle_int(unbox(Float64,y),unbox(Float64,x
 ##
 
 show{T<:FloatNA}(io, n::T) = isna(n) ? show(io, NA) : show(io, basetype(n))
-
-showcompact(io, x::Float) = _show(io, x, GRISU_PRECISION, 6)

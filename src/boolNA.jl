@@ -10,6 +10,7 @@ promote_rule(::Type{Bool}, ::Type{NAtype} ) = BoolNA
 ## boolean conversions ##
 
 convert(::Type{BoolNA}, x::NAtype) = NA_Bool
+convert(::Type{BoolNA}, x::BoolNA) = x
 
 convert(::Type{BoolNA}, x::Number) = (x!=0)
 
@@ -21,6 +22,7 @@ convert(::Type{IntNA16},  x::BoolNA) = box(IntNA16,zext16(unbox(BoolNA,x)))
 convert(::Type{IntNA32},  x::BoolNA) = box(IntNA32,zext32(unbox(BoolNA,x)))
 convert(::Type{IntNA64},  x::BoolNA) = box(IntNA64,zext64(unbox(BoolNA,x)))
 convert(::Type{IntNA128}, x::BoolNA) = box(IntNA128,zext_int(IntNA128,unbox(BoolNA,x)))
+convert(::Type{Int64},  x::BoolNA) = box(Int64,zext64(unbox(BoolNA,x)))
 
 convert(::Type{Float32}, x::BoolNA) = box(Float32,sitofp32(unbox(BoolNA,x)))
 convert(::Type{Float64}, x::BoolNA) = box(Float64,sitofp64(unbox(BoolNA,x)))
@@ -119,4 +121,59 @@ fld(x::BoolNA, y::BoolNA) = fld(intNA(x),intNA(y))
 rem(x::BoolNA, y::BoolNA) = rem(intNA(x),intNA(y))
 mod(x::BoolNA, y::BoolNA) = mod(intNA(x),intNA(y))
 
-show(io, b::BoolNA) = print(io, isna(b) ? "NA" : b ? "true" : "false")
+show(io, b::BoolNA) = print(io, isna(b) ? "NA" : b == true ? "true" : "false")
+
+## isbool(::BoolNA) = true
+
+##
+## Array stuff
+##
+
+indices(I::AbstractVector{BoolNA}) = find(I)
+
+function check_bounds(sz::Int, I::AbstractVector{BoolNA})
+    if length(I) > sz
+        throw(BoundsError())
+    end
+end
+
+function check_bounds(A::Array, I::Array{BoolNA})
+    if !isequal(size(A), size(I))
+        throw(BoundsError())
+    end
+end
+
+# logical indexing
+
+ref(A::Array, I::AbstractVector{BoolNA}) = A[findNA(I)]
+## TODO more combinations here
+ref(A::Matrix, I::Integer, J::AbstractVector{BoolNA}) = A[I,findNA(J)]
+ref(A::Matrix, I::AbstractVector{BoolNA}, J::Integer) = A[findNA(I),J]
+ref(A::Matrix, I::AbstractVector{BoolNA}, J::AbstractVector{BoolNA}) = A[findNA(I),findNA(J)]
+ref{T<:Integer}(A::Matrix, I::AbstractVector{T}, J::AbstractVector{BoolNA}) = A[I,findNA(J)]
+ref{T<:Integer}(A::Matrix, I::AbstractVector{BoolNA}, J::AbstractVector{T}) = A[findNA(I),J]
+
+function nnzorNA(a::StridedArray)
+    n = 0
+    for i = 1:numel(a)
+        n += isna(a[i]) ? 1 : bool(a[i]) ? 1 : 0
+    end
+    return n
+end
+
+function findNA(A::StridedArray)
+    nnzA = nnzorNA(A)
+    I = Array(IntNA, nnzA)
+    count = 1
+    for i=1:length(A)
+        if isna(A[i])
+            I[count] = NA_Int
+            count += 1
+        elseif A[i] != 0
+            I[count] = i
+            count += 1
+        end
+    end
+    return I
+end
+

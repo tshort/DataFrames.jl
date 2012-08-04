@@ -260,6 +260,7 @@ mod(x::IntNA128, y::IntNA128) = isna(x) || isna(y) ? NA_Int128 : box(IntNA128,sm
 ## integer promotions ##
 
 promote_rule{T <: SignedNA}(::Type{T}, ::Type{NAtype} ) = T
+promote_rule{T <: Signed}(::Type{T}, ::Type{NAtype} ) = natype(T)
 
 basetypes = [:Int8 :Int16 :Int32 :Int64 :Int128
              :Uint8 :Uint16 :Uint32 :Uint64 :Uint128

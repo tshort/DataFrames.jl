@@ -3,17 +3,24 @@
 ## Standard Float's
 ##
 
-const NA_Float32 = box(Float32,unbox(Uint32,0x7fc007A2))
-const NA_Float64 = box(Float64,unbox(Uint64,0x7ff80000000007A2))
+## const NA_Float32 = box(Float32,unbox(Uint32,0x7fc007A2))
+## const NA_Float64 = box(Float64,unbox(Uint64,0x7ff80000000007A2))
+## const NA_Float = NA_Float64
+
+abstract FloatNA <: Float
+bitstype 32 FloatNA32 <: FloatNA
+bitstype 64 FloatNA64 <: FloatNA
+
+const NA_Float32 = box(FloatNA32,unbox(Uint32,0x7fc007A2))
+const NA_Float64 = box(FloatNA64,unbox(Uint64,0x7ff80000000007A2))
 const NA_Float = NA_Float64
 
-na(::Type{Float32}) = NA_Float32
-na(::Type{Float64}) = NA_Float64
-na(::Float32) = NA_Float32
-na(::Float64) = NA_Float64
 
 convert{T <: Float}(::Type{T}, x::NAtype) = na(T)
 promote_rule{T <: Float}(::Type{T}, ::Type{NAtype} ) = T
+
+convert{T <: Float}(::Type{T}, x::NAtype) = na(natype(T))
+promote_rule{T <: Float}(::Type{T}, ::Type{NAtype} ) = natype(T)
 
 isna(x::Float32)  = eq_int(unbox(Float32, x), unbox(Float32,  NA_Float32))
 isna(x::Float64)  = eq_int(unbox(Float64, x), unbox(Float64,  NA_Float64))
@@ -29,34 +36,26 @@ isnan(x::Float32)  = eq_int(unbox(Float32, x), unbox(Float32,  NaN32))
 isnan(x::Float64)  = eq_int(unbox(Float64, x), unbox(Float64,  NaN))
 
 
-##
-## Standard complex numbers
-##
-
-complex NA_Complex64 = complex64(NA_Float32, NA_Float32)
-complex NA_Complex128 = complex128(NA_Float64, NA_Float64)
-
-na(::Type{Complex64}) = NA_Complex64
-na(::Type{Complex128}) = NA_Complex128
-na(::Complex64) = NA_Complex64
-na(::Complex128) = NA_Complex128
-na{T<:Complex}(x::T) = complex(na(real(x)), na(imag(x)))
-
-basetype{T<:Complex}(x::T) = x
-natype{T<:Complex}(x::T) = x
-
-convert{T <: Complex}(::Type{T}, x::NAtype) = na(T)
-
-isna{T<:Complex}(x::T) = isna(real(x)) || isna(imag(x))
-
 
 ##
 ## FloatNA bittype
 ##
 
-abstract FloatNA <: Float
-bitstype 32 FloatNA32 <: FloatNA
-bitstype 64 FloatNA64 <: FloatNA
+
+na(::Type{Float32}) = NA_Float32
+na(::Type{Float64}) = NA_Float64
+na(::Float32) = NA_Float32
+na(::Float64) = NA_Float64
+
+na(::Type{FloatNA32}) = NA_Float32
+na(::Type{FloatNA64}) = NA_Float64
+na(::FloatNA32) = NA_Float32
+na(::FloatNA64) = NA_Float64
+
+## na(::Type{FloatNA32}) = floatNA32(NA_Float32)
+## na(::Type{FloatNA64}) = floatNA64(NA_Float64)
+## na(::FloatNA32) = floatNA32(NA_Float32)
+## na(::FloatNA64) = floatNA64(NA_Float64)
 
 convert{T <: FloatNA}(::Type{T}, x::NAtype) = na(T)
 promote_rule{T <: FloatNA}(::Type{T}, ::Type{NAtype} ) = T
@@ -81,10 +80,6 @@ function basetype{T<:FloatNA,N}(x::Array{T,N})
     res
 end
 
-na(::Type{FloatNA32}) = floatNA32(NA_Float32)
-na(::Type{FloatNA64}) = floatNA64(NA_Float64)
-na(::FloatNA32) = floatNA32(NA_Float32)
-na(::FloatNA64) = floatNA64(NA_Float64)
 
 
 ## conversions to floating-point ##
@@ -415,3 +410,23 @@ _jl_fp_neg_le(x::FloatNA64, y::FloatNA64) = isna(x) || isna(y) ? NA_Float64 : sl
 ##
 
 show{T<:FloatNA}(io, n::T) = isna(n) ? show(io, NA) : show(io, basetype(n))
+
+##
+## Standard complex numbers
+##
+
+complex NA_Complex64 = complex64(NA_Float32, NA_Float32)
+complex NA_Complex128 = complex128(NA_Float64, NA_Float64)
+
+na(::Type{Complex64}) = NA_Complex64
+na(::Type{Complex128}) = NA_Complex128
+na(::Complex64) = NA_Complex64
+na(::Complex128) = NA_Complex128
+na{T<:Complex}(x::T) = complex(na(real(x)), na(imag(x)))
+
+basetype{T<:Complex}(x::T) = x
+natype{T<:Complex}(x::T) = x
+
+convert{T <: Complex}(::Type{T}, x::NAtype) = na(T)
+
+isna{T<:Complex}(x::T) = isna(real(x)) || isna(imag(x))

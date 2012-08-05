@@ -356,7 +356,7 @@ Two options are possible for NA representation:
   more consistant for both of these to return NA.
 
 In either case, since conversion between Float types and FloatNA types
-is fast. Arrays are just reinterpretted; there is no copying.
+is fast. Arrays are just reinterpreted; there is no copying.
 
 It is possible to differentiate between NA and NaN. Operations between
 NA and NaN's can be either, depending on which flavor of NaN

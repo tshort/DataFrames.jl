@@ -281,15 +281,15 @@ for i in 1:length(basetypes)
     end
 end
 
-promote_rule(::Type{Float32}, ::Type{IntNA8} ) = Float32
-promote_rule(::Type{Float32}, ::Type{IntNA16}) = Float32
-promote_rule(::Type{Float32}, ::Type{IntNA32}) = Float64
-promote_rule(::Type{Float32}, ::Type{IntNA64}) = Float64 # TODO: should be Float80
+promote_rule(::Type{Float32}, ::Type{IntNA8} ) = FloatNA32
+promote_rule(::Type{Float32}, ::Type{IntNA16}) = FloatNA32
+promote_rule(::Type{Float32}, ::Type{IntNA32}) = FloatNA64
+promote_rule(::Type{Float32}, ::Type{IntNA64}) = FloatNA64 # TODO: should be Float80
 
-promote_rule(::Type{Float64}, ::Type{IntNA8} ) = Float64
-promote_rule(::Type{Float64}, ::Type{IntNA16}) = Float64
-promote_rule(::Type{Float64}, ::Type{IntNA32}) = Float64
-promote_rule(::Type{Float64}, ::Type{IntNA64}) = Float64 # TODO: should be Float80
+promote_rule(::Type{Float64}, ::Type{IntNA8} ) = FloatNA64
+promote_rule(::Type{Float64}, ::Type{IntNA16}) = FloatNA64
+promote_rule(::Type{Float64}, ::Type{IntNA32}) = FloatNA64
+promote_rule(::Type{Float64}, ::Type{IntNA64}) = FloatNA64 # TODO: should be Float80
 
 ## traits ##
 

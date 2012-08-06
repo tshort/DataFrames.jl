@@ -262,6 +262,11 @@ julia> randn(7)[b]
  -0.535744
 ```
 
+Here is the type hierarchy with these bitstypes included:
+
+```jul
+```
+
 More details on each type follow.
 
 ## BoolNA

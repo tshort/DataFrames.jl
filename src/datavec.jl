@@ -267,6 +267,9 @@ ref(x::PooledDataVec, i::Number) = x.refs[i] == 0 ? NA : x.pool[x.refs[i]]
 function ref(x::DataVec, r::Range1)
     DataVec(x.data[r], x.na[r], x.filter, x.replace, x.replaceVal)
 end
+function ref(x::DataVec, r::Range)
+    DataVec(x.data[r], x.na[r], x.filter, x.replace, x.replaceVal)
+end
 # PooledDataVec -- be sure copy the pool!
 function ref(x::PooledDataVec, r::Range1)
     # TODO: copy the whole pool or just the items in the range?
@@ -633,7 +636,7 @@ end
 # additional code
 
 # print
-show(io, x::AbstractDataVec) = show_comma_array(io, x, '[', ']') 
+show(io, x::AbstractDataVec) = Base.show_comma_array(io, x, '[', ']') 
 
 # TODO: vectorizable math functions like sqrt, sin, trunc, etc., which should return a DataVec{T}
 # not sure if this is the best approach, but works for a demo

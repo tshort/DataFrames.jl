@@ -63,12 +63,12 @@ ref(df::DataFrame, ex::Expr, c::Int) = df[with(df, ex), c]
 ref(df::DataFrame, ex::Expr, c::Vector{Int}) = df[with(df, ex), c]
 ref(df::DataFrame, ex::Expr, c) = df[with(df, ex), c]
 
-
+index(df::DataFrame) = df.colindex
 
 # Associative methods:
-has(df::DataFrame, key) = has(df.colindex, key)
-get(df::DataFrame, key, default) = has(df, key) ? df[key] : default
-keys(df::DataFrame) = keys(df.colindex)
+has(df::AbstractDataFrame, key) = has(index(df), key)
+get(df::AbstractDataFrame, key, default) = has(df, key) ? df[key] : default
+keys(df::AbstractDataFrame) = keys(index(df))
 values(df::DataFrame) = df.columns
 del_all(df::DataFrame) = DataFrame()
 # Collection methods:
@@ -77,6 +77,10 @@ done(df::AbstractDataFrame, i) = i > ncol(df)
 next(df::AbstractDataFrame, i) = (df[i], i + 1)
 ## numel(df::AbstractDataFrame) = ncol(df)
 isempty(df::AbstractDataFrame) = ncol(df) == 0
+# Column groups
+set_group(d::AbstractDataFrame, newgroup, names) = set_group(index(d), newgroup, names)
+set_groups(d::AbstractDataFrame, gr::Dict{ByteString,Vector{ByteString}}) = set_groups(index(d), gr)
+get_groups(d::AbstractDataFrame) = get_groups(index(d))
 
 function insert(df::DataFrame, index::Integer, item, name)
     @assert 0 < index <= ncol(df) + 1
@@ -84,6 +88,14 @@ function insert(df::DataFrame, index::Integer, item, name)
     df[name] = item
     # rearrange:
     df[[1:index-1, end, index:end-1]]
+end
+
+function insert(df::DataFrame, df2::DataFrame)
+    @assert nrow(df) == nrow(df2) || nrow(df) == 0
+    for n in colnames(df2)
+        df[n] = df2[n]
+    end
+    df
 end
 
 # if we have something else, convert each value in this tuple to a DataVec and pass it in, hoping for the best
@@ -146,10 +158,11 @@ function ==(df1::AbstractDataFrame, df2::AbstractDataFrame)
     return true
 end
 
-head(df::DataFrame, r::Int) = df[1:r, :]
-head(df::DataFrame) = head(df, 6)
-tail(df::DataFrame, r::Int) = df[(nrow(df)-r+1):nrow(df), :]
-tail(df::DataFrame) = tail(df, 6)
+head(df::AbstractDataFrame, r::Int) = df[1:min(r,nrow(df)), :]
+head(df::AbstractDataFrame) = head(df, 6)
+tail(df::AbstractDataFrame, r::Int) = df[max(1,nrow(df)-r+1):nrow(df), :]
+tail(df::AbstractDataFrame) = tail(df, 6)
+
 
 
 
@@ -162,6 +175,12 @@ maxShowLength(dv::AbstractDataVec) = max([length(_string(x)) for x = dv])
 function show(io, df::AbstractDataFrame)
     ## TODO use alignment() like print_matrix in show.jl.
     println(io, "$(typeof(df))  $(size(df))")
+    gr = get_groups(df)
+    if length(gr) > 0
+        #print(io, "Column groups: ")
+        pretty_show(io, gr)
+        println(io)
+    end
     N = nrow(df)
     Nmx = 20   # maximum head and tail lengths
     if N <= 2Nmx
@@ -170,14 +189,14 @@ function show(io, df::AbstractDataFrame)
         rowrng = [1:Nmx, N-Nmx+1:N]
     end
     # we don't have row names -- use indexes
-    rowNames = [sprintf("[%d,]", r) for r = rowrng]
+    rowNames = [@sprintf("[%d,]", r) for r = rowrng]
     
     rownameWidth = maxShowLength(rowNames)
     
     # if we don't have columns names, use indexes
     # note that column names in R are obligatory
     if eltype(colnames(df)) == Nothing
-        colNames = [sprintf("[,%d]", c) for c = 1:ncol(df)]
+        colNames = [@sprintf("[,%d]", c) for c = 1:ncol(df)]
     else
         colNames = colnames(df)
     end
@@ -203,6 +222,11 @@ end
 
 function dump(io::IOStream, x::AbstractDataFrame, n::Int, indent)
     println(io, typeof(x), "  $(nrow(x)) observations of $(ncol(x)) variables")
+    gr = get_groups(x)
+    if length(gr) > 0
+        pretty_show(io, gr)
+        println(io)
+    end
     if n > 0
         for col in names(x)[1:min(10,end)]
             print(io, indent, "  ", col, ": ")
@@ -342,7 +366,11 @@ function csvDataFrame(filename, o::Options)
     @check_used o
     
     # combine the columns into a DataFrame and return
-    DataFrame(cols, columnNames)
+    if columnNames == []
+        DataFrame(cols)
+    else
+        DataFrame(cols, columnNames)
+    end
 end
 csvDataFrame(filename) = csvDataFrame(filename, Options())
 
@@ -384,17 +412,8 @@ nrow(df::SubDataFrame) = length(df.rows)
 ncol(df::SubDataFrame) = ncol(df.parent)
 colnames(df::SubDataFrame) = colnames(df.parent) 
 
-head(df::AbstractDataFrame, r::Int) = df[1:min(r,nrow(df)), :]
-head(df::AbstractDataFrame) = head(df, 6)
-tail(df::AbstractDataFrame, r::Int) = df[max(1,nrow(df)-r+1):nrow(df), :]
-tail(df::AbstractDataFrame) = tail(df, 6)
-
 # Associative methods:
-has(df::SubDataFrame, key) = has(df.colindex, key)
-get(df::SubDataFrame, key, default) = has(df, key) ? df[key] : default
-keys(df::SubDataFrame) = keys(df.colindex)
-values(df::SubDataFrame, key) = keys(df.colindex)
-del_all(df::SubDataFrame) = DataFrame()
+index(df::SubDataFrame) = index(df.parent)
 
 
 
@@ -824,7 +843,7 @@ end
 groupsort_indexer(pv::PooledDataVec) = groupsort_indexer(pv.refs, length(pv.pool))
 
 type GroupedDataFrame
-    parent::DataFrame
+    parent::AbstractDataFrame
     cols::Vector         # columns used for sorting
     idx::Vector{Int}     # indexing vector when sorted by the given columns
     starts::Vector{Int}  # starts of groups
@@ -834,7 +853,7 @@ end
 #
 # Split
 #
-function groupby{T}(df::DataFrame, cols::Vector{T})
+function groupby{T}(df::AbstractDataFrame, cols::Vector{T})
     ## a subset of Wes McKinney's algorithm here:
     ##     http://wesmckinney.com/blog/?p=489
     
@@ -861,7 +880,7 @@ function groupby{T}(df::DataFrame, cols::Vector{T})
     ends = [starts[2:end] - 1]
     GroupedDataFrame(df, cols, idx, starts[1:end-1], ends)
 end
-groupby(d::DataFrame, cols) = groupby(d, [cols])
+groupby(d::AbstractDataFrame, cols) = groupby(d, [cols])
 
 # add a function curry
 groupby{T}(cols::Vector{T}) = x -> groupby(x, cols)
@@ -1135,4 +1154,61 @@ function merge(df1::AbstractDataFrame, df2::AbstractDataFrame, bycol)
     # TODO left/right join, outer join - needs better
     #      NA indexing or a way to create NA DataFrames.
     # TODO add support for multiple columns
+end
+
+
+##
+## Miscellaneous
+##
+
+function complete_cases(df::AbstractDataFrame)
+    ## Returns a Vector{Bool} of indexes of complete cases (rows with no NA's).
+    res = !isna(df[1])
+    for i in 2:ncol(df)
+        res &= !isna(df[i])
+    end
+    res
+end
+
+function array(d::AbstractDataFrame)
+    # DataFrame -> Array{Any}
+    if nrow(d) == 1  # collapse to one element
+       [el[1] for el in d[1,:]]
+    else
+       [col for col in d]
+    end
+end
+
+# DataFrame -> Array{promoted_type, 2}
+# Note: this doesn't work yet for DataVecs. It might once promotion
+# with Arrays is added (work needed).
+matrix(d::AbstractDataFrame) = reshape([d...],size(d))
+
+function duplicated(df::AbstractDataFrame)
+    # Return a Vector{Bool} indicated whether the row is a duplicate
+    # of a prior row.
+    res = fill(false, nrow(df))
+    di = Dict()
+    for i in 1:nrow(df)
+        if has(di, array(df[i,:]))
+            res[i] = true
+        else
+            di[array(df[i,:])] = 1 
+        end
+    end
+    res
+end
+
+# Unique rows of an AbstractDataFrame.        
+unique(df::AbstractDataFrame) = df[!duplicated(df), :] 
+
+function duplicatedkey(df::AbstractDataFrame)
+    # Here's another (probably a lot faster) way to do `duplicated`
+    # by grouping on all columns. It will fail if columns cannot be
+    # made into PooledDataVec's.
+    gd = groupby(df, colnames(df))
+    idx = [1:length(gd.idx)][gd.idx][gd.starts]
+    res = fill(true, nrow(df))
+    res[idx] = false
+    res
 end

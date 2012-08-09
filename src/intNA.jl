@@ -452,3 +452,43 @@ function natype{T<:Number,N}(x::Array{T,N})
     end
     res
 end
+
+## array.jl rewrites for more speed
+
+for f in (:+, :-, :.*, :div, :mod, :&, :|, :$)
+    @eval begin
+        function ($f){S<:SignedNA,T<:SignedNA}(A::AbstractArray{S}, B::AbstractArray{T})
+            F = Array(promote_type(S,T), promote_shape(size(A),size(B)))
+            _na = natype(eltype(A)) 
+            for i=1:numel(A)
+                F[i] = ($f)(basetype(A[i]), basetype(B[i]))
+                if isna(A[i]) || isna(B[i])
+                    F[i] = _na 
+                end
+            end
+            return F
+        end
+        function ($f){T<:SignedNA}(A::Number, B::AbstractArray{T})
+            F = similar(B, promote_type(typeof(A),T))
+            _na = natype(eltype(B)) 
+            for i=1:numel(B)
+                F[i] = ($f)(A, basetype(B[i]))
+                if isna(B[i])
+                    F[i] = _na 
+                end
+            end
+            return F
+        end
+        function ($f){T<:SignedNA}(A::AbstractArray{T}, B::Number)
+            F = similar(A, promote_type(T,typeof(B)))
+            _na = natype(eltype(A)) 
+            for i=1:numel(A)
+                F[i] = ($f)(basetype(A[i]), B)
+                if isna(A[i])
+                    F[i] = _na 
+                end
+            end
+            return F
+        end
+    end
+end

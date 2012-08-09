@@ -322,14 +322,33 @@ for (f,scalarf) in ((:(.==),:(==)), (:.<, :<), (:.!=,:!=), (:.<=,:<=))
         function ($f){T<:FloatNA}(A::AbstractArray{T}, B::AbstractArray{T})
             F = Array(BoolNA, promote_shape(size(A),size(B)))
             for i = 1:numel(B)
-                F[i] = ($scalarf)(A[i], B[i])
+                F[i] = ($scalarf)(basetype(A[i]), basetype(B[i]))
+                if isna(A[i]) || isna(B[i])
+                    F[i] = NA_Bool
+                end
             end
             return F
         end
-        ($f){T<:FloatNA}(A::Number, B::AbstractArray{T}) =
-            boolNA(reshape([ ($scalarf)(A, B[i]) for i=1:length(B)], size(B)))
-        ($f){T<:FloatNA}(A::AbstractArray{T}, B::Number) =
-            boolNA(reshape([ ($scalarf)(A[i], B) for i=1:length(A)], size(A)))
+        function ($f){T<:FloatNA}(A::Number, B::AbstractArray{T})
+            F = Array(BoolNA, size(B))
+            for i = 1:numel(B)
+                F[i] = ($scalarf)(A, basetype(B[i]))
+                if isna(B[i])
+                    F[i] = NA_Bool
+                end
+            end
+            return F
+        end
+        function ($f){T<:FloatNA}(B::AbstractArray{T}, A::Number)
+            F = Array(BoolNA, size(B))
+            for i = 1:numel(B)
+                F[i] = ($scalarf)(basetype(B[i]),A)
+                if isna(B[i])
+                    F[i] = NA_Bool
+                end
+            end
+            return F
+        end
     end
 end
 

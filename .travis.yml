@@ -1,4 +1,4 @@
-- julia -e 'cd(Pkg.dir("DataFrames")); include(joinpath("docs", "make.jl"))'
+
 language: julia
 julia:
   - nightly

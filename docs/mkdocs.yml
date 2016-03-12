@@ -29,7 +29,6 @@ pages:
 - [man/index.md, Introduction]
 - [man/getting_started.md, User guide, Getting Started]
 - [man/io.md, User guide, IO]
-- [man/subsets.md, User guide, Subsetting]
 - [man/joins.md, User guide, Joins]
 - [man/split_apply_combine.md, User guide, Split-apply-combine]
 - [man/reshaping_and_pivoting.md, User guide, Reshaping]

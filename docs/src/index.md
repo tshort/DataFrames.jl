@@ -3,7 +3,7 @@
 ## Package Manual
 
     {contents}
-    Pages = ["man/guide.md", "man/doctests.md", "man/hosting.md"]
+    Pages = ["man/getting_started.md", "man/sorting.md"]
     Depth = 2
 
 ## Package Reference
@@ -15,4 +15,4 @@
 ## Documentation Index
 
     {index}
-    Pages = ["lib/public.md", "lib/internals.md"]
+    Pages = ["lib/maintypes.md", "lib/manipulation.md", "lib/utilities.md"]

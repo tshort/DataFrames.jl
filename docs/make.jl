@@ -1,4 +1,4 @@
-using Lapidary, DataFrames
+using Lapidary, DataFrames, DataArrays
 
 # Build documentation.
 # ====================

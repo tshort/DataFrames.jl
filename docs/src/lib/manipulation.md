@@ -1,3 +1,7 @@
+
+    {meta}
+    CurrentModule = DataFrames
+
 # Data Manipulation
 
 ## Joins

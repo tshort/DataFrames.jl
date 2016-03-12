@@ -6,7 +6,7 @@ The `DataArray` type is meant to behave like a standard Julia `Array` and tries 
 
 One dimensional `DataArray`:
 
-```julia
+```
 julia> using DataArrays
 
 julia> dv = data([1, 2, 3])
@@ -27,7 +27,7 @@ NA
 
 Two dimensional `DataArray`:
 
-```julia
+```
 julia> using DataArrays
 
 julia> dm = data([1 2; 3 4])
@@ -49,7 +49,7 @@ DataFrames
 
 In contrast, a `DataFrame` offers substantially more forms of indexing because columns can be referred to by name:
 
-```julia
+```
 julia> using DataFrames
 
 julia> df = DataFrame(A = 1:10, B = 2:2:20)
@@ -70,7 +70,7 @@ julia> df = DataFrame(A = 1:10, B = 2:2:20)
 
 Refering to the first column by index or name:
 
-```julia
+```
 julia> df[1]
 10-element DataArray{Int64,1}:
   1
@@ -100,7 +100,7 @@ julia> df[:A]
 
 Refering to the first element of the first column:
 
-```julia
+```
 julia> df[1, 1]
 1
 
@@ -110,7 +110,7 @@ julia> df[1, :A]
 
 Selecting a subset of rows by index and an (ordered) subset of columns by name:
 
-```julia
+```
 julia> df[1:3, [:A, :B]]
 3x2 DataFrame
 | Row | A | B |
@@ -130,7 +130,7 @@ julia> df[1:3, [:B, :A]]
 
 Selecting a subset of rows by using a condition:
 
-```julia
+```
 julia> df[df[:A] % 2 .== 0, :]
 5x2 DataFrame
 | Row | A  | B  |

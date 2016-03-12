@@ -789,5 +789,5 @@ nrow(df)
 ncol(df)
 ```
 
-""";
-[:nrow, :ncol]
+"""
+# nrow, ncol

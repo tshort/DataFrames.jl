@@ -1,3 +1,7 @@
+
+    {meta}
+    CurrentModule = DataFrames
+
 # Utilities
 
     {docs}
@@ -8,8 +12,6 @@
     describe
     dump
     names!
-    ncol
-    nrow
     nonunique
     rename
     rename!

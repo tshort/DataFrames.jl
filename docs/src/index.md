@@ -1,15 +1,9 @@
-# Lapidary Documentation Outline
+# DataFrames Documentation Outline
 
 ## Package Manual
 
     {contents}
     Pages = ["man/getting_started.md", "man/sorting.md"]
-    Depth = 2
-
-## Package Reference
-
-    {contents}
-    Pages = ["lib/public.md", "lib/internals.md"]
     Depth = 2
 
 ## Documentation Index

@@ -26,7 +26,7 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- [man/index.md, Introduction]
+- [index.md, Introduction]
 - [man/getting_started.md, User guide, Getting Started]
 - [man/io.md, User guide, IO]
 - [man/joins.md, User guide, Joins]

@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "DataFrames Documentation Outline\n\n\n\n\nPackage Manual\n\n\n\n\nGetting Started\n\n\nInstallation\n\n\nThe \nNA\n Value\n\n\nThe \nDataArray\n Type\n\n\nThe \nDataFrame\n Type\n\n\nAccessing Classic Data Sets\n\n\n\n\n\n\nImporting and Exporting (I/O)\n\n\nImporting data from tabular data files\n\n\nExporting data to a tabular data file\n\n\n\n\n\n\nSorting\n\n\nThe Formula, ModelFrame and ModelMatrix Types\n\n\nPooling Data (Representing Factors)\n\n\n\n\n\n\nAPI\n\n\n\n\nMain Types\n\n\nData Manipulation\n\n\nJoins\n\n\nReshaping\n\n\n\n\n\n\nUtilities\n\n\n\n\n\n\nDocumentation Index\n\n\n\n\nreadtable\n\n\nwritetable\n\n\nAbstractDataFrame\n\n\nDataFrame\n\n\nSubDataFrame\n\n\njoin\n\n\nmelt\n\n\nmeltdf\n\n\nstack\n\n\nstackdf\n\n\nunstack\n\n\ndump\n\n\nunique\n\n\nhead\n\n\ntail\n\n\ncomplete_cases\n\n\ncomplete_cases!\n\n\neltypes\n\n\nnames!\n\n\nnonunique\n\n\nrename\n\n\nrename!\n\n\nunique!\n\n\ndescribe", 
+            "text": "DataFrames Documentation Outline\n\n\n\n\nPackage Manual\n\n\n\n\nGetting Started\n\n\nInstallation\n\n\nThe \nNA\n Value\n\n\nThe \nDataArray\n Type\n\n\nThe \nDataFrame\n Type\n\n\nAccessing Classic Data Sets\n\n\n\n\n\n\nImporting and Exporting (I/O)\n\n\nImporting data from tabular data files\n\n\nExporting data to a tabular data file\n\n\n\n\n\n\nDatabase-Style Joins\n\n\nThe Split-Apply-Combine Strategy\n\n\nReshaping and Pivoting Data\n\n\nSorting\n\n\nThe Formula, ModelFrame and ModelMatrix Types\n\n\nPooling Data (Representing Factors)\n\n\n\n\n\n\nAPI\n\n\n\n\nMain Types\n\n\nData Manipulation\n\n\nJoins\n\n\nReshaping\n\n\n\n\n\n\nUtilities\n\n\n\n\n\n\nDocumentation Index\n\n\n\n\nreadtable\n\n\nwritetable\n\n\nAbstractDataFrame\n\n\nDataFrame\n\n\nSubDataFrame\n\n\njoin\n\n\nmelt\n\n\nmeltdf\n\n\nstack\n\n\nstackdf\n\n\nunstack\n\n\ndump\n\n\nunique\n\n\nhead\n\n\ntail\n\n\ncomplete_cases\n\n\ncomplete_cases!\n\n\neltypes\n\n\nnames!\n\n\nnonunique\n\n\nrename\n\n\nrename!\n\n\nunique!\n\n\ndescribe", 
             "title": "Introduction"
         }, 
         {
@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/#package-manual", 
-            "text": "Getting Started  Installation  The  NA  Value  The  DataArray  Type  The  DataFrame  Type  Accessing Classic Data Sets    Importing and Exporting (I/O)  Importing data from tabular data files  Exporting data to a tabular data file    Sorting  The Formula, ModelFrame and ModelMatrix Types  Pooling Data (Representing Factors)", 
+            "text": "Getting Started  Installation  The  NA  Value  The  DataArray  Type  The  DataFrame  Type  Accessing Classic Data Sets    Importing and Exporting (I/O)  Importing data from tabular data files  Exporting data to a tabular data file    Database-Style Joins  The Split-Apply-Combine Strategy  Reshaping and Pivoting Data  Sorting  The Formula, ModelFrame and ModelMatrix Types  Pooling Data (Representing Factors)", 
             "title": "Package Manual"
         }, 
         {

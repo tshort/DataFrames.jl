@@ -15,4 +15,4 @@
 ## Documentation Index
 
     {index}
-    Pages = ["lib/maintypes.md", "lib/manipulation.md", "lib/utilities.md"]
+    Pages = ["man/io.md", "lib/maintypes.md", "lib/manipulation.md", "lib/utilities.md"]

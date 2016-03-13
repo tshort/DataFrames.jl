@@ -453,7 +453,7 @@ complete_cases(df::AbstractDataFrame)
 
 * `::Vector{Bool}` : indexes of complete cases
 
-See also `complete_cases!`.
+See also [`complete_cases!`]({ref}).
 
 ### Examples
 
@@ -489,7 +489,7 @@ complete_cases!(df::AbstractDataFrame)
 
 * `::AbstractDataFrame` : the updated version
 
-See also `complete_cases`.
+See also [`complete_cases`]({ref}).
 
 ### Examples
 
@@ -562,7 +562,7 @@ nonunique(df::AbstractDataFrame)
 * `::Vector{Bool}` : indicates whether the row is a duplicate of some
   prior row
 
-See also `unique` and `unique!`.
+See also [`unique`]({ref}) and [`unique!`]({ref}).
 
 ### Examples
 
@@ -608,7 +608,7 @@ unique!(df::AbstractDataFrame)
 
 * `::AbstractDataFrame` : the updated version
 
-See also `nonunique` and `unique`.
+See also [`nonunique`]({ref}).
 
 ### Examples
 
@@ -776,7 +776,7 @@ ncol(df::AbstractDataFrame)
 
 * `::AbstractDataFrame` : the updated version
 
-See also `size`.
+See also [`size`]({ref}).
 
 NOTE: these functions may be depreciated for `size`.
 

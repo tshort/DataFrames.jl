@@ -3,6 +3,10 @@
     CurrentModule = DataFrames
 
 # Data Manipulation
+    
+    {index}
+    Pages = ["lib/manipulation.md"]
+    
 
 ## Joins
 

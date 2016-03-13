@@ -4,6 +4,9 @@
 
 # Utilities
 
+    {index}
+    Pages = ["lib/utilities.md"]
+    
     {docs}
     eltypes
     head

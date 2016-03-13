@@ -18,23 +18,23 @@ The following are normally implemented for AbstractDataFrames:
 
 * [`describe`]({ref}) : summarize columns
 * [`dump`]({ref}) : show structure
-* [`hcat`]({ref}) : horizontal concatenation
-* [`vcat`]({ref}) : vertical concatenation
-* [`names`]({ref}) : columns names
+* `hcat` : horizontal concatenation
+* `vcat` : vertical concatenation
+* `names` : columns names
 * [`names!`]({ref}) : set columns names
 * [`rename!`]({ref}) : rename columns names based on keyword arguments
 * [`eltypes`]({ref}) : `eltype` of each column
-* [`length`]({ref}) : number of columns
+* `length` : number of columns
 * [`size`]({ref}) : (nrows, ncols)
 * [`head`]({ref}) : first `n` rows
 * [`tail`]({ref}) : last `n` rows
-* [`convert`]({ref}) : convert to an array
-* [`DataArray`]({ref}) : convert to a DataArray
+* `convert` : convert to an array
+* `DataArray` : convert to a DataArray
 * [`complete_cases`]({ref}) : indexes of complete cases (rows with no NA's)
 * [`complete_cases!`]({ref}) : remove rows with NA's
 * [`nonunique`]({ref}) : indexes of duplicate rows
 * [`unique!`]({ref}) : remove duplicate rows
-* [`similar`]({ref}) : a DataFrame with similar columns as `d`
+* `similar` : a DataFrame with similar columns as `d`
 
 ### Indexing
 

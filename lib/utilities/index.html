@@ -635,7 +635,7 @@
 <ul>
 <li><code>::Vector{Bool}</code> : indexes of complete cases</li>
 </ul>
-<p>See also <code>complete_cases!</code>.</p>
+<p>See also <a href="./#DataFrames.complete_cases!"><code>complete_cases!</code></a>.</p>
 <h3 id="examples_2">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">df</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">:</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">NA</span>
@@ -659,7 +659,7 @@
 <ul>
 <li><code>::AbstractDataFrame</code> : the updated version</li>
 </ul>
-<p>See also <code>complete_cases</code>.</p>
+<p>See also <a href="./#DataFrames.complete_cases"><code>complete_cases</code></a>.</p>
 <h3 id="examples_3">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">df</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">:</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">NA</span>
@@ -761,7 +761,7 @@
 <ul>
 <li><code>::Vector{Bool}</code> : indicates whether the row is a duplicate of some   prior row</li>
 </ul>
-<p>See also <code>unique</code> and <code>unique!</code>.</p>
+<p>See also <a href="./#Base.unique"><code>unique</code></a> and <a href="./#DataFrames.unique!"><code>unique!</code></a>.</p>
 <h3 id="examples_7">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">vcat</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
@@ -879,7 +879,7 @@
 <ul>
 <li><code>::AbstractDataFrame</code> : the updated version</li>
 </ul>
-<p>See also <code>nonunique</code> and <code>unique</code>.</p>
+<p>See also <a href="./#DataFrames.nonunique"><code>nonunique</code></a>.</p>
 <h3 id="examples_11">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">vcat</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
@@ -904,7 +904,7 @@
 <ul>
 <li><code>::AbstractDataFrame</code> : the updated version</li>
 </ul>
-<p>See also <code>nonunique</code> and <code>unique</code>.</p>
+<p>See also <a href="./#DataFrames.nonunique"><code>nonunique</code></a>.</p>
 <h3 id="examples_12">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">vcat</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>

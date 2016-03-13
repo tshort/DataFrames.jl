@@ -208,18 +208,6 @@
               </a>
             </li>
           
-            <li class="anchor">
-              <a title="Advanced Options for Reading CSV Files" href="#advanced-options-for-reading-csv-files">
-                Advanced Options for Reading CSV Files
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Advanced Options for Writing CSV Files" href="#advanced-options-for-writing-csv-files">
-                Advanced Options for Writing CSV Files
-              </a>
-            </li>
-          
         </ul>
       
     
@@ -362,38 +350,41 @@
 <p><a id='importing-data-from-tabular-data-files'></a></p>
 <h2 id="importing-data-from-tabular-data-files">Importing data from tabular data files</h2>
 <p>To read data from a CSV-like file, use the <code>readtable</code> function:</p>
-<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.csv&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.tsv&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.wsv&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;\t&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+<p><a id='DataFrames.readtable' href='#DataFrames.readtable'>#</a><strong>DataFrames.readtable</strong> &mdash; <em>Function</em>.</p>
+<hr />
+<p>Read data from a tabular-file format (CSV, TSV, ...)</p>
+<div class="codehilite"><pre><span></span><span class="n">readtable</span><span class="p">(</span><span class="n">filename</span><span class="p">;</span>
+          <span class="n">header</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">,</span>
+          <span class="n">separator</span><span class="p">::</span><span class="n">Char</span> <span class="o">=</span> <span class="n">getseparator</span><span class="p">(</span><span class="n">pathname</span><span class="p">),</span>
+          <span class="n">quotemark</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Char</span><span class="p">}</span> <span class="o">=</span> <span class="p">[</span><span class="sc">&#39;&quot;&#39;</span><span class="p">],</span>
+          <span class="n">decimal</span><span class="p">::</span><span class="n">Char</span> <span class="o">=</span> <span class="sc">&#39;.&#39;</span><span class="p">,</span>
+          <span class="n">nastrings</span><span class="p">::</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">ASCIIString</span><span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;NA&quot;</span><span class="p">],</span>
+          <span class="n">truestrings</span><span class="p">::</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">ASCIIString</span><span class="p">[</span><span class="s">&quot;T&quot;</span><span class="p">,</span> <span class="s">&quot;t&quot;</span><span class="p">,</span> <span class="s">&quot;TRUE&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span><span class="p">],</span>
+          <span class="n">falsestrings</span><span class="p">::</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">ASCIIString</span><span class="p">[</span><span class="s">&quot;F&quot;</span><span class="p">,</span> <span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="s">&quot;FALSE&quot;</span><span class="p">,</span> <span class="s">&quot;false&quot;</span><span class="p">],</span>
+          <span class="n">makefactors</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+          <span class="n">nrows</span><span class="p">::</span><span class="n">Integer</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+          <span class="n">names</span><span class="p">::</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">[],</span>
+          <span class="n">eltypes</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">DataType</span><span class="p">}</span> <span class="o">=</span> <span class="n">DataType</span><span class="p">[],</span>
+          <span class="n">allowcomments</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+          <span class="n">commentmark</span><span class="p">::</span><span class="n">Char</span> <span class="o">=</span> <span class="sc">&#39;#&#39;</span><span class="p">,</span>
+          <span class="n">ignorepadding</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">,</span>
+          <span class="n">skipstart</span><span class="p">::</span><span class="n">Integer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="n">skiprows</span><span class="p">::</span><span class="n">AbstractVector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span> <span class="o">=</span> <span class="kt">Int</span><span class="p">[],</span>
+          <span class="n">skipblanks</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">,</span>
+          <span class="n">encoding</span><span class="p">::</span><span class="n">Symbol</span> <span class="o">=</span> <span class="p">:</span><span class="n">utf8</span><span class="p">,</span>
+          <span class="n">allowescapes</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+          <span class="n">normalizenames</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">)</span>
 </pre></div>
 
 
-<p><code>readtable</code> requires that you specify the path of the file that you would like to read as a <code>String</code>. It supports many additional keyword arguments: these are documented in the section on advanced I/O operations.</p>
-<p><a id='exporting-data-to-a-tabular-data-file'></a></p>
-<h2 id="exporting-data-to-a-tabular-data-file">Exporting data to a tabular data file</h2>
-<p>To write data to a CSV file, use the <code>writetable</code> function:</p>
-<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.csv&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
-<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">quotemark</span> <span class="o">=</span> <span class="sc">&#39;\&#39;&#39;</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span>
-<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
-</pre></div>
-
-
-<p><code>writetable</code> requires the following arguments:</p>
+<h3 id="arguments">Arguments</h3>
 <ul>
-<li><code>filename::String</code> – The path of the file that you wish to write to.</li>
-<li><code>df::DataFrame</code> – The DataFrame you wish to write to disk.</li>
+<li><code>filename</code> : the filename to be read</li>
 </ul>
-<p>Additional advanced options are documented below.</p>
-<p><a id='advanced-options-for-reading-csv-files'></a></p>
-<h2 id="advanced-options-for-reading-csv-files">Advanced Options for Reading CSV Files</h2>
-<p><code>readtable</code> accepts the following optional keyword arguments:</p>
+<h3 id="keyword-arguments">Keyword Arguments</h3>
 <ul>
 <li><code>header::Bool</code> – Use the information from the file's header line to determine column names. Defaults to <code>true</code>.</li>
-<li><code>separator::Char</code> – Assume that fields are split by the <code>separator</code> character. If not specified, it will be guessed from the filename: <code>.csv</code> defaults to <code>','</code>, <code>.tsv</code> defaults to <code>'\t'</code>, <code>.wsv</code> defaults to <code>' '</code>.</li>
+<li><code>separator::Char</code> – Assume that fields are split by the <code>separator</code> character. If not specified, it will be guessed from the filename: <code>.csv</code> defaults to <code>','</code>, <code>.tsv</code> defaults to <code>'    '</code>, <code>.wsv</code> defaults to <code>' '</code>.</li>
 <li><code>quotemark::Vector{Char}</code> – Assume that fields contained inside of two <code>quotemark</code> characters are quoted, which disables processing of separators and linebreaks. Set to <code>Char[]</code> to disable this feature and slightly improve performance. Defaults to <code>['"']</code>.</li>
 <li><code>decimal::Char</code> – Assume that the decimal place in numbers is written using the <code>decimal</code> character. Defaults to <code>'.'</code>.</li>
 <li><code>nastrings::Vector{ASCIIString}</code> – Translate any of the strings into this vector into an <code>NA</code>. Defaults to <code>["", "NA"]</code>.</li>
@@ -412,15 +403,58 @@
 <li><code>encoding::Symbol</code> – Specify the file's encoding as either <code>:utf8</code> or <code>:latin1</code>. Defaults to <code>:utf8</code>.</li>
 <li><code>normalizenames::Bool</code> – Ensure that column names are valid Julia identifiers. For instance this renames a column named <code>"a b"</code> to <code>"a_b"</code> which can then be accessed with <code>:a_b</code> instead of <code>symbol("a b")</code>. Defaults to <code>true</code>.</li>
 </ul>
-<p><a id='advanced-options-for-writing-csv-files'></a></p>
-<h2 id="advanced-options-for-writing-csv-files">Advanced Options for Writing CSV Files</h2>
-<p><code>writetable</code> accepts the following optional keyword arguments:</p>
+<h3 id="result">Result</h3>
+<ul>
+<li><code>::DataFrame</code></li>
+</ul>
+<h3 id="examples">Examples</h3>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.tsv&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.wsv&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="err">&#39;</span>    <span class="err">&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='exporting-data-to-a-tabular-data-file'></a></p>
+<h2 id="exporting-data-to-a-tabular-data-file">Exporting data to a tabular data file</h2>
+<p>To write data to a CSV file, use the <code>writetable</code> function:</p>
+<p><a id='DataFrames.writetable' href='#DataFrames.writetable'>#</a><strong>DataFrames.writetable</strong> &mdash; <em>Function</em>.</p>
+<hr />
+<p>Write data to a tabular-file format (CSV, TSV, ...)</p>
+<div class="codehilite"><pre><span></span><span class="n">writetable</span><span class="p">(</span><span class="n">filename</span><span class="p">::</span><span class="n">AbstractString</span><span class="p">,</span>
+           <span class="n">df</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">;</span>
+           <span class="n">header</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">,</span>
+           <span class="n">separator</span><span class="p">::</span><span class="n">Char</span> <span class="o">=</span> <span class="n">getseparator</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span>
+           <span class="n">quotemark</span><span class="p">::</span><span class="n">Char</span> <span class="o">=</span> <span class="sc">&#39;&quot;&#39;</span><span class="p">,</span>
+           <span class="n">nastring</span><span class="p">::</span><span class="n">AbstractString</span> <span class="o">=</span> <span class="s">&quot;NA&quot;</span><span class="p">,</span>
+           <span class="n">append</span><span class="p">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="arguments_1">Arguments</h3>
+<ul>
+<li><code>filename</code> : the filename to be created</li>
+<li><code>df</code> : the AbstractDataFrame to be written</li>
+</ul>
+<h3 id="keyword-arguments_1">Keyword Arguments</h3>
 <ul>
 <li><code>separator::Char</code> – The separator character that you would like to use. Defaults to the output of <code>getseparator(filename)</code>, which uses commas for files that end in <code>.csv</code>, tabs for files that end in <code>.tsv</code> and a single space for files that end in <code>.wsv</code>.</li>
 <li><code>quotemark::Char</code> – The character used to delimit string fields. Defaults to <code>'"'</code>.</li>
 <li><code>header::Bool</code> – Should the file contain a header that specifies the column names from <code>df</code>. Defaults to <code>true</code>.</li>
 <li><code>nastring::AbstractString</code> – What to write in place of missing data. Defaults to <code>"NA"</code>.</li>
 </ul>
+<h3 id="result_1">Result</h3>
+<ul>
+<li><code>::DataFrame</code></li>
+</ul>
+<h3 id="examples_1">Examples</h3>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.csv&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">quotemark</span> <span class="o">=</span> <span class="err">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with

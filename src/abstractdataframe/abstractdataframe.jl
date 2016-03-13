@@ -25,7 +25,7 @@ The following are normally implemented for AbstractDataFrames:
 * [`rename!`]({ref}) : rename columns names based on keyword arguments
 * [`eltypes`]({ref}) : `eltype` of each column
 * `length` : number of columns
-* [`size`]({ref}) : (nrows, ncols)
+* `size` : (nrows, ncols)
 * [`head`]({ref}) : first `n` rows
 * [`tail`]({ref}) : last `n` rows
 * `convert` : convert to an array

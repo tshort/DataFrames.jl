@@ -16,25 +16,25 @@ type in that it allows indexing by a key (the columns).
 
 The following are normally implemented for AbstractDataFrames:
 
-* `describe(d)` : summarize columns
-* `dump(d)` : show structure
-* `hcat(d1, d2)` : horizontal concatenation
-* `vcat(d1, d2)` : vertical concatenation
-* `names(d)` : columns names
-* `names!(d, vals)` : set columns names
-* `rename!(d, args)` : rename columns names based on keyword arguments
-* `eltypes(d)` : `eltype` of each column
-* `length(d)` : number of columns
-* `size(d)` : (nrows, ncols)
-* `head(d, n = 5)` : first `n` rows
-* `tail(d, n = 5)` : last `n` rows
-* `convert(Array, d)` : convert to an array
-* `DataArray(d)` : convert to a DataArray
-* `complete_cases(d)` : indexes of complete cases (rows with no NA's)
-* `complete_cases!(d)` : remove rows with NA's
-* `nonunique(d)` : indexes of duplicate rows
-* `unique!(d)` : remove duplicate rows
-* `similar(d)` : a DataFrame with similar columns as `d`
+* [`describe(d)`]({ref}) : summarize columns
+* [`dump(d)`]({ref}) : show structure
+* [`hcat(d1, d2)`]({ref}) : horizontal concatenation
+* [`vcat(d1, d2)`]({ref}) : vertical concatenation
+* [`names(d)`]({ref}) : columns names
+* [`names!(d, vals)`]({ref}) : set columns names
+* [`rename!(d, args)`]({ref}) : rename columns names based on keyword arguments
+* [`eltypes(d)`]({ref}) : `eltype` of each column
+* [`length(d)`]({ref}) : number of columns
+* [`size(d)`]({ref}) : (nrows, ncols)
+* [`head(d, n = 5)`]({ref}) : first `n` rows
+* [`tail(d, n = 5)`]({ref}) : last `n` rows
+* [`convert(Array, d)`]({ref}) : convert to an array
+* [`DataArray(d)`]({ref}) : convert to a DataArray
+* [`complete_cases(d)`]({ref}) : indexes of complete cases (rows with no NA's)
+* [`complete_cases!(d)`]({ref}) : remove rows with NA's
+* [`nonunique(d)`]({ref}) : indexes of duplicate rows
+* [`unique!(d)`]({ref}) : remove duplicate rows
+* [`similar(d)`]({ref}) : a DataFrame with similar columns as `d`
 
 ### Indexing
 

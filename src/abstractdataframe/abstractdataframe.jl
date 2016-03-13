@@ -16,25 +16,25 @@ type in that it allows indexing by a key (the columns).
 
 The following are normally implemented for AbstractDataFrames:
 
-* [`describe(d)`]({ref}) : summarize columns
-* [`dump(d)`]({ref}) : show structure
-* [`hcat(d1, d2)`]({ref}) : horizontal concatenation
-* [`vcat(d1, d2)`]({ref}) : vertical concatenation
-* [`names(d)`]({ref}) : columns names
-* [`names!(d, vals)`]({ref}) : set columns names
-* [`rename!(d, args)`]({ref}) : rename columns names based on keyword arguments
-* [`eltypes(d)`]({ref}) : `eltype` of each column
-* [`length(d)`]({ref}) : number of columns
-* [`size(d)`]({ref}) : (nrows, ncols)
-* [`head(d, n = 5)`]({ref}) : first `n` rows
-* [`tail(d, n = 5)`]({ref}) : last `n` rows
-* [`convert(Array, d)`]({ref}) : convert to an array
-* [`DataArray(d)`]({ref}) : convert to a DataArray
-* [`complete_cases(d)`]({ref}) : indexes of complete cases (rows with no NA's)
-* [`complete_cases!(d)`]({ref}) : remove rows with NA's
-* [`nonunique(d)`]({ref}) : indexes of duplicate rows
-* [`unique!(d)`]({ref}) : remove duplicate rows
-* [`similar(d)`]({ref}) : a DataFrame with similar columns as `d`
+* [`describe`]({ref}) : summarize columns
+* [`dump`]({ref}) : show structure
+* [`hcat`]({ref}) : horizontal concatenation
+* [`vcat`]({ref}) : vertical concatenation
+* [`names`]({ref}) : columns names
+* [`names!`]({ref}) : set columns names
+* [`rename!`]({ref}) : rename columns names based on keyword arguments
+* [`eltypes`]({ref}) : `eltype` of each column
+* [`length`]({ref}) : number of columns
+* [`size`]({ref}) : (nrows, ncols)
+* [`head`]({ref}) : first `n` rows
+* [`tail`]({ref}) : last `n` rows
+* [`convert`]({ref}) : convert to an array
+* [`DataArray`]({ref}) : convert to a DataArray
+* [`complete_cases`]({ref}) : indexes of complete cases (rows with no NA's)
+* [`complete_cases!`]({ref}) : remove rows with NA's
+* [`nonunique`]({ref}) : indexes of duplicate rows
+* [`unique!`]({ref}) : remove duplicate rows
+* [`similar`]({ref}) : a DataFrame with similar columns as `d`
 
 ### Indexing
 

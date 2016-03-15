@@ -269,18 +269,6 @@
         <ul>
           
             <li class="anchor">
-              <a title="Common methods" href="#common-methods">
-                Common methods
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Indexing" href="#indexing">
-                Indexing
-              </a>
-            </li>
-          
-            <li class="anchor">
               <a title="Constructors" href="#constructors">
                 Constructors
               </a>
@@ -398,7 +386,7 @@
 <p><a id='DataFrames.AbstractDataFrame' href='#DataFrames.AbstractDataFrame'>#</a><strong>DataFrames.AbstractDataFrame</strong> &mdash; <em>Type</em>.</p>
 <hr />
 <p>An abstract type for which all concrete types expose a database-like interface.</p>
-<h3 id="common-methods">Common methods</h3>
+<p><strong>Common methods</strong></p>
 <p>An AbstractDataFrame is a two-dimensional table with Symbols for column names. An AbstractDataFrame is also similar to an Associative type in that it allows indexing by a key (the columns).</p>
 <p>The following are normally implemented for AbstractDataFrames:</p>
 <ul>
@@ -422,7 +410,7 @@
 <li><a href="../utilities/#DataFrames.unique!"><code>unique!</code></a> : remove duplicate rows</li>
 <li><code>similar</code> : a DataFrame with similar columns as <code>d</code></li>
 </ul>
-<h3 id="indexing">Indexing</h3>
+<p><strong>Indexing</strong></p>
 <p>Table columns are accessed (<code>getindex</code>) by a single index that can be a symbol identifier, an integer, or a vector of each. If a single column is selected, just the column object is returned. If multiple columns are selected, some AbstractDataFrame is returned.</p>
 <div class="codehilite"><pre><span></span><span class="n">d</span><span class="p">[:</span><span class="n">colA</span><span class="p">]</span>
 <span class="n">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>

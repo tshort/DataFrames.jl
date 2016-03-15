@@ -269,12 +269,6 @@
         <ul>
           
             <li class="anchor">
-              <a title="Constructors" href="#constructors">
-                Constructors
-              </a>
-            </li>
-          
-            <li class="anchor">
               <a title="Arguments" href="#arguments">
                 Arguments
               </a>
@@ -288,24 +282,6 @@
           
             <li class="anchor">
               <a title="Examples" href="#examples">
-                Examples
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Arguments" href="#arguments_1">
-                Arguments
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Notes" href="#notes_1">
-                Notes
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Examples" href="#examples_1">
                 Examples
               </a>
             </li>
@@ -434,7 +410,7 @@
 <hr />
 <p>An AbstractDataFrame that stores a set of named columns</p>
 <p>The columns are normally AbstractVectors stored in memory, particularly a Vector, DataVector, or PooledDataVector.</p>
-<h3 id="constructors">Constructors</h3>
+<p><strong>Constructors</strong></p>
 <div class="codehilite"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Any</span><span class="p">},</span> <span class="n">names</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Symbol</span><span class="p">})</span>
 <span class="n">DataFrame</span><span class="p">(</span><span class="n">kwargs</span><span class="o">...</span><span class="p">)</span>
 <span class="n">DataFrame</span><span class="p">()</span> <span class="c"># an empty DataFrame</span>
@@ -444,7 +420,7 @@
 </pre></div>
 
 
-<h3 id="arguments">Arguments</h3>
+<p><strong>Arguments</strong></p>
 <ul>
 <li><code>columns</code> : a Vector{Any} with each column as contents</li>
 <li><code>names</code> : the column names</li>
@@ -455,11 +431,11 @@
 <li><code>ds</code> : a vector of Associatives</li>
 </ul>
 <p>Each column in <code>columns</code> should be the same length.</p>
-<h3 id="notes">Notes</h3>
+<p><strong>Notes</strong></p>
 <p>Most of the default constructors convert columns to <code>DataArrays</code>.  The base constructor, <code>DataFrame(columns::Vector{Any}, names::Vector{Symbol})</code> does not convert to <code>DataArrays</code>.</p>
 <p>A <code>DataFrame</code> is a lightweight object. As long as columns are not manipulated, creation of a DataFrame from existing AbstractVectors is inexpensive. For example, indexing on columns is inexpensive, but indexing by rows is expensive because copies are made of each column.</p>
 <p>Because column types can vary, a DataFrame is not type stable. For performance-critical code, do not index into a DataFrame inside of loops.</p>
-<h3 id="examples">Examples</h3>
+<p><strong>Examples</strong></p>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
 <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="s">&quot;y&quot;</span><span class="p">,</span><span class="s">&quot;z&quot;</span><span class="p">][</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
 <span class="n">df1</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="kt">Any</span><span class="p">[[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)],</span> <span class="p">[:</span><span class="n">A</span><span class="p">,</span> <span class="p">:</span><span class="n">B</span><span class="p">,</span> <span class="p">:</span><span class="n">C</span><span class="p">])</span>  <span class="c"># columns are Arrays</span>
@@ -491,15 +467,15 @@
 </pre></div>
 
 
-<h3 id="arguments_1">Arguments</h3>
+<h3 id="arguments">Arguments</h3>
 <ul>
 <li><code>d</code> : an AbstractDataFrame</li>
 <li><code>rows</code> : any indexing type for rows, typically an Int,   AbstractVector{Int}, AbstractVector{Bool}, or a Range</li>
 </ul>
-<h3 id="notes_1">Notes</h3>
+<h3 id="notes">Notes</h3>
 <p>A <code>SubDataFrame</code> is an AbstractDataFrame, so expect that most DataFrame functions should work. Such methods include <code>describe</code>, <code>dump</code>, <code>nrow</code>, <code>size</code>, <code>by</code>, <code>stack</code>, and <code>join</code>. Indexing is just like a DataFrame; copies are returned.</p>
 <p>To subset along columns, use standard column indexing as that creates a view to the columns by default. To subset along rows and columns, use column-based indexing with <code>sub</code>.</p>
-<h3 id="examples_1">Examples</h3>
+<h3 id="examples">Examples</h3>
 <div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">rep</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rep</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">c</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">sdf1</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">sdf2</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">[:</span><span class="n">a</span><span class="p">]</span> <span class="o">.&gt;</span> <span class="mi">1</span><span class="p">)</span>

@@ -208,6 +208,12 @@
               </a>
             </li>
           
+            <li class="anchor">
+              <a title="Supplying DataFrames inline with non-standard string literals" href="#supplying-dataframes-inline-with-non-standard-string-literals">
+                Supplying DataFrames inline with non-standard string literals
+              </a>
+            </li>
+          
         </ul>
       
     
@@ -416,6 +422,7 @@
 </pre></div>
 
 
+<p><code>readtable</code> requires that you specify the path of the file that you would like to read as a <code>String</code>. To read data from a non-file source, you may also supply an <code>IO</code> object. It supports many additional keyword arguments: these are documented in the section on advanced I/O operations.</p>
 <p><a id='exporting-data-to-a-tabular-data-file'></a></p>
 <h2 id="exporting-data-to-a-tabular-data-file">Exporting data to a tabular data file</h2>
 <p>To write data to a CSV file, use the <code>writetable</code> function:</p>
@@ -454,6 +461,52 @@
 <span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
 <span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">quotemark</span> <span class="o">=</span> <span class="err">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span>
 <span class="n">writetable</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='supplying-dataframes-inline-with-non-standard-string-literals'></a></p>
+<h2 id="supplying-dataframes-inline-with-non-standard-string-literals">Supplying <code>DataFrame</code>s inline with non-standard string literals</h2>
+<p>You can also provide CSV-like tabular data in a non-standard string literal to construct a new <code>DataFrame</code>, as in the following:</p>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">csv</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    name,  age, squidPerWeek</span>
+<span class="s">    Alice,  36,         3.14</span>
+<span class="s">    Bob,    24,         0</span>
+<span class="s">    Carol,  58,         2.71</span>
+<span class="s">    Eve,    49,         7.77</span>
+<span class="s">    &quot;&quot;&quot;</span>
+</pre></div>
+
+
+<p>The <code>csv</code> string literal prefix indicates that the data are supplied in standard comma-separated value format. Common alternative formats are also available as string literals. For semicolon-separated values, with comma as a decimal, use <code>csv2</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">csv2</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    name;  age; squidPerWeek</span>
+<span class="s">    Alice;  36;         3,14</span>
+<span class="s">    Bob;    24;         0</span>
+<span class="s">    Carol;  58;         2,71</span>
+<span class="s">    Eve;    49;         7,77</span>
+<span class="s">    &quot;&quot;&quot;</span>
+</pre></div>
+
+
+<p>For whitespace-separated values, use <code>wsv</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">wsv</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    name  age squidPerWeek</span>
+<span class="s">    Alice  36         3.14</span>
+<span class="s">    Bob    24         0</span>
+<span class="s">    Carol  58         2.71</span>
+<span class="s">    Eve    49         7.77</span>
+<span class="s">    &quot;&quot;&quot;</span>
+</pre></div>
+
+
+<p>And for tab-separated values, use <code>tsv</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">tsv</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    name    age squidPerWeek</span>
+<span class="s">    Alice   36  3.14</span>
+<span class="s">    Bob 24  0</span>
+<span class="s">    Carol   58  2.71</span>
+<span class="s">    Eve 49  7.77</span>
+<span class="s">    &quot;&quot;&quot;</span>
 </pre></div>
           <aside class="copyright" role="note">
             

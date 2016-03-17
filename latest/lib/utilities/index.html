@@ -469,11 +469,6 @@
 
 <p><a id='Base.dump' href='#Base.dump'>#</a><strong>Base.dump</strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>dump(x)
-</pre></div>
-
-
-<p>Show all user-visible structure of a value.</p>
 <p>Show the structure of an AbstractDataFrame, in a tree-like format</p>
 <div class="codehilite"><pre><span></span><span class="n">dump</span><span class="p">(</span><span class="n">df</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">,</span> <span class="n">n</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">dump</span><span class="p">(</span><span class="n">io</span><span class="p">::</span><span class="n">IO</span><span class="p">,</span> <span class="n">df</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">,</span> <span class="n">n</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
@@ -627,16 +622,6 @@
 
 <p><a id='Base.unique' href='#Base.unique'>#</a><strong>Base.unique</strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>unique(f, itr)
-</pre></div>
-
-
-<p>Returns an array containing one value from <code>itr</code> for each unique value produced by <code>f</code> applied to elements of <code>itr</code>.</p>
-<div class="codehilite"><pre><span></span>unique(itr[, dim])
-</pre></div>
-
-
-<p>Returns an array containing only the unique elements of the iterable <code>itr</code>, in the order that the first of each set of equivalent elements originally appears. If <code>dim</code> is specified, returns unique regions of the array <code>itr</code> along <code>dim</code>.</p>
 <p>Delete duplicate rows</p>
 <div class="codehilite"><pre><span></span><span class="n">unique</span><span class="p">(</span><span class="n">df</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">)</span>
 <span class="n">unique!</span><span class="p">(</span><span class="n">df</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">)</span>

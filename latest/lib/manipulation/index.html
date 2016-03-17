@@ -359,16 +359,6 @@
 <h2 id="joins">Joins</h2>
 <p><a id='Base.join' href='#Base.join'>#</a><strong>Base.join</strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>join(strings, delim, [last])
-</pre></div>
-
-
-<p>Join an array of <code>strings</code> into a single string, inserting the given delimiter between adjacent strings. If <code>last</code> is given, it will be used instead of <code>delim</code> between the last two strings. For example</p>
-<div class="codehilite"><pre><span></span>join([&quot;apples&quot;, &quot;bananas&quot;, &quot;pineapples&quot;], &quot;, &quot;, &quot; and &quot;) == &quot;apples, bananas and pineapples&quot;
-</pre></div>
-
-
-<p><code>strings</code> can be any iterable over elements <code>x</code> which are convertible to strings via <code>print(io::IOBuffer, x)</code>.</p>
 <p>Join two DataFrames</p>
 <div class="codehilite"><pre><span></span><span class="n">join</span><span class="p">(</span><span class="n">df1</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">,</span>
      <span class="n">df2</span><span class="p">::</span><span class="n">AbstractDataFrame</span><span class="p">;</span>
